@@ -1,0 +1,91 @@
+# ============================================================================
+# AWS Cloud-Native Serverless Framework 2026 — Documentation Site
+# Built with Zensical (https://zensical.org)
+# ============================================================================
+
+[project]
+
+site_name = "Modern Cloud-Native Serverless Framework on AWS"
+
+site_description = "Comprehensive framework for building enterprise-grade cloud-native applications on AWS — architecture principles, software patterns, CI/CD, observability, AI integration, and hands-on workshops."
+
+site_author = "Cloud Architecture Team"
+
+# site_url = "https://your-domain.com/"
+
+copyright = """
+Copyright &copy; 2026 — AWS Serverless Framework Investigation
+"""
+
+# Navigation structure (ordered by learning path)
+nav = [
+  { "Home" = "index.md" },
+  # --- PRINCIPLES & PATTERNS ---
+  { "Architecture Principles" = "01-architecture-principles.md" },
+  { "Software Architecture Patterns" = "02-software-architecture-patterns.md" },
+  { "Platform Engineering Guidelines" = "03-platform-engineering-guidelines.md" },
+  { "Platform Engineering: IDP → ADP" = "04-platform-engineering-idp-to-adp.md" },
+  { "AI-SDLC (Agentic Lifecycle)" = "05-ai-sdlc.md" },
+  { "DevOps & CI/CD (TPF)" = "06-devops-cicd.md" },
+  { "Testing Strategy" = "07-testing-strategy.md" },
+  { "APIOps Model" = "28-apiops.md" },
+  { "Data Strategy" = "29-data-strategy.md" },
+  # --- INFRASTRUCTURE ---
+  { "Compute Layer" = "08-compute.md" },
+  { "Infrastructure as Code" = "09-iac.md" },
+  { "CloudFormation Express" = "10-cfn-express.md" },
+  { "API & Event Patterns" = "11-api-events.md" },
+  { "Data Layer" = "12-data-layer.md" },
+  { "Frontend & Full-Stack" = "13-frontend-fullstack.md" },
+  { "AI/ML Integration" = "14-ai-ml.md" },
+  # --- OPERATIONS & GOVERNANCE ---
+  { "Observability (OTEL + Powertools)" = "15-observability.md" },
+  { "Security Baseline" = "16-security-baseline.md" },
+  { "Multi-Account Landing Zone" = "17-multi-account-landing-zone.md" },
+  { "FinOps & Cost Governance" = "18-finops-cost-governance.md" },
+  { "Disaster Recovery & Continuity" = "30-disaster-recovery-continuity.md" },
+  { "Reference Architecture" = "19-reference-architecture.md" },
+  { "Recommendations" = "20-recommendations.md" },
+  # --- ADOPTION & ONBOARDING ---
+  { "Adoption Roadmap" = "21-adoption-roadmap.md" },
+  { "Developer Onboarding" = "22-developer-onboarding.md" },
+  # --- WORKSHOPS ---
+  { "Workshop: Serverless End-to-End" = "23-workshop-serverless.md" },
+  { "Workshop: Enterprise CDK" = "24-workshop-enterprise-cdk.md" },
+  { "Workshop: ECS Backend" = "25-workshop-ecs-backend.md" },
+  { "Workshop: CI/CD Phase 1" = "26-workshop-cicd-phase1.md" },
+  { "Workshop: CI/CD Phase 2" = "27-workshop-cicd-phase2.md" },
+  { "Workshop: Micro-Frontends" = "31-workshop-micro-frontends.md" },
+]
+
+# Theme configuration
+[project.theme]
+variant = "modern"
+
+[project.theme.palette]
+scheme = "slate"
+primary = "deep purple"
+accent = "amber"
+
+[project.theme.features]
+navigation_tabs = true
+navigation_sections = true
+navigation_expand = true
+toc_integrate = true
+search_suggest = true
+search_highlight = true
+content_code_copy = true
+
+# Extensions for enhanced markdown
+[project.extensions.pymdownx]
+highlight = true
+superfences = true
+tabbed = true
+tasklist = true
+emoji = true
+
+[project.extensions.toc]
+permalink = true
+
+[project.extensions.admonition]
+enabled = true
