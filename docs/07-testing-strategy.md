@@ -763,7 +763,7 @@ export default async function globalTeardown() {
 # template.yaml (excerpt for testing)
 Globals:
   Function:
-    Runtime: nodejs20.x
+    Runtime: nodejs24.x
     Timeout: 30
     Environment:
       Variables:

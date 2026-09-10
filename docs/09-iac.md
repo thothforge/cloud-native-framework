@@ -60,7 +60,7 @@ export class MyAppStack extends Stack {
     });
 
     const fn = new lambda.Function(this, 'Handler', {
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_24_X,
       architecture: lambda.Architecture.ARM_64,
       handler: 'index.handler',
       code: lambda.Code.fromAsset('lambda'),

@@ -78,13 +78,26 @@ docker compose version
 
 ### Step 1.1: Scaffold the Project
 
+Choose **one** of the following options to create the `orders-service` project. Both produce a CDKv2 TypeScript scaffold — pick the one that fits your workflow. Do **not** run both.
+
+**Option A — Initialize with ThothCTL (recommended)**
+
+ThothCTL creates the project structure for you, no manual clone required.
+
 ```bash
-# Clone the CDKv2 scaffold
+# Create a new CDKv2 project named "orders-service"
+thothctl init project -p orders-service --project-type cdkv2
+cd orders-service
+```
+
+**Option B — Clone the CDKv2 scaffold directly**
+
+Clone the scaffold repository if you prefer to start from the raw template.
+
+```bash
+# Clone the CDKv2 scaffold into a folder named "orders-service"
 git clone https://github.com/thothforge/cdkv2_typescript_scaffold.git orders-service
 cd orders-service
-
-# Initialize ThothCTL
-thothctl init project -p orders-service --project-type cdkv2
 ```
 
 ### Step 1.2: Create the Container Application
@@ -95,12 +108,12 @@ mkdir -p app/services/orders-api
 
 ```dockerfile
 # app/services/orders-api/Dockerfile
-FROM node:20-slim AS builder
+FROM node:24-slim AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --only=production
 
-FROM node:20-slim
+FROM node:24-slim
 WORKDIR /app
 COPY --from=builder /app/node_modules ./node_modules
 COPY . .
@@ -114,17 +127,23 @@ CMD ["node", "src/server.js"]
 ```typescript
 // app/services/orders-api/src/server.ts
 import express from 'express';
-import { Logger } from '@aws-lambda-powertools/logger';
+import pino from 'pino';
+import pinoHttp from 'pino-http';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 const app = express();
-const logger = new Logger({ serviceName: 'orders-api' });
+app.use(express.json());
+
+// Structured JSON logger for a long-running container (not Lambda).
+const logger = pino({ name: 'orders-api', level: process.env.LOG_LEVEL || 'info' });
+app.use(pinoHttp({ logger }));
+
 const port = process.env.PORT || 8080;
 
 app.get('/health', (req, res) => res.json({ status: 'healthy' }));
 
 app.post('/orders', async (req, res) => {
-  logger.info('Creating order', { body: req.body });
+  logger.info({ body: req.body }, 'Creating order');
   // Business logic here
   res.status(201).json({ orderId: 'new-order-id' });
 });
@@ -133,6 +152,13 @@ app.listen(port, () => {
   logger.info(`Orders API listening on port ${port}`);
 });
 ```
+
+> **Why Pino and not Powertools for AWS Lambda?** `@aws-lambda-powertools/*`
+> is built around the Lambda invocation lifecycle (cold starts, per-invocation
+> context injection). This service is a long-running Express container on ECS
+> Fargate, so a general-purpose structured logger like **Pino** is the right
+> fit. For tracing and metrics on ECS, use the **OpenTelemetry SDK** exporting
+> to the ADOT collector (already wired up in `docker-compose.yml`).
 
 ### Step 1.3: Docker Compose for Local Development
 
@@ -153,7 +179,8 @@ services:
       - DYNAMODB_ENDPOINT=http://dynamodb-local:8000
       - TABLE_NAME=orders
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-      - POWERTOOLS_SERVICE_NAME=orders-api
+      - OTEL_SERVICE_NAME=orders-api
+      - LOG_LEVEL=info
     depends_on:
       - dynamodb-local
       - otel-collector
@@ -285,7 +312,8 @@ export class EcsOrdersStack extends cdk.Stack {
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'orders-api' }),
       environment: {
         PORT: '8080',
-        POWERTOOLS_SERVICE_NAME: 'orders-api',
+        OTEL_SERVICE_NAME: 'orders-api',
+        LOG_LEVEL: 'info',
       },
       healthCheck: {
         command: ['CMD-SHELL', 'curl -f http://localhost:8080/health || exit 1'],
@@ -381,7 +409,7 @@ export const config = {
   // Observability: same SDK, different backend
   otel: {
     endpoint: process.env.OTEL_EXPORTER_OTLP_ENDPOINT, // Local: http://otel-collector:4318, Cloud: auto (ADOT sidecar)
-    serviceName: process.env.POWERTOOLS_SERVICE_NAME || 'orders-api',
+    serviceName: process.env.OTEL_SERVICE_NAME || 'orders-api',
   },
 };
 ```

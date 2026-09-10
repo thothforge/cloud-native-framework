@@ -15,7 +15,7 @@ thothctl init env
 
 This bootstraps your local environment with:
 
-- **Node.js 20+** (via nvm)
+- **Node.js 24+** (via nvm)
 - **AWS CDK CLI** (latest v2)
 - **Docker Desktop** (required for local development)
 - **AWS CLI v2** (configured with SSO or credentials)
@@ -527,7 +527,7 @@ describe('OrderService', () => {
    const fn = new NodejsFunction(this, 'MyFeatureFunction', {
      entry: 'src/adapters/inbound/my-feature-handler.ts',
      handler: 'handler',
-     runtime: Runtime.NODEJS_20_X,
+     runtime: Runtime.NODEJS_24_X,
      environment: { TABLE_NAME: table.tableName },
    });
    table.grantReadWriteData(fn);

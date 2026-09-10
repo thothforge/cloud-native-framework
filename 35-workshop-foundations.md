@@ -18,7 +18,7 @@ A minimal serverless HTTP endpoint:
 ```mermaid
 flowchart LR
     CLIENT["curl / browser"] --> APIGW["API Gateway<br/>HTTP API"]
-    APIGW --> LAMBDA["Lambda function<br/>(Node.js 20, ARM64)"]
+    APIGW --> LAMBDA["Lambda function<br/>(Node.js 24, ARM64)"]
     LAMBDA --> RESP["JSON response"]
 ```
 
@@ -195,7 +195,7 @@ export class HelloServerlessStack extends cdk.Stack {
     const helloFn = new nodejs.NodejsFunction(this, 'HelloFunction', {
       entry: 'lambda/hello.ts',
       handler: 'handler',
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_24_X,
       architecture: lambda.Architecture.ARM_64,
       timeout: cdk.Duration.seconds(10),
       memorySize: 128,
@@ -296,6 +296,115 @@ curl https://<your-api-id>.execute-api.us-east-1.amazonaws.com/hello
 ```
 
 **✅ Checkpoint:** The response now shows your updated message.
+
+### 5.5 Tighten the loop with `cdk watch`
+
+Re-running `cdk deploy` by hand after every edit gets tedious. `cdk watch` monitors your source files and **redeploys automatically on save**, so your edit loop becomes just "save the file."
+
+First, tell CDK which files to watch by adding a `"watch"` block to `cdk.json` (the file `cdk init` created):
+
+```json
+{
+  "app": "npx ts-node --prefer-ts-exts bin/hello-serverless.ts",
+  "watch": {
+    "include": ["lambda/**/*.ts", "lib/**/*.ts", "bin/**/*.ts"],
+    "exclude": ["**/*.d.ts", "node_modules/**", "cdk.out/**"]
+  }
+}
+```
+
+> Keep the existing `"app"` value that `cdk init` generated — only **add** the `"watch"` key.
+
+Now start watching:
+
+```bash
+cdk watch
+```
+
+Leave it running in one terminal. Edit the message in `lambda/hello.ts` again and save — CDK detects the change and redeploys on its own. Watch the terminal, then re-test:
+
+```bash
+curl https://<your-api-id>.execute-api.us-east-1.amazonaws.com/hello
+```
+
+**How it deploys:** `cdk watch` uses **hotswap** by default. For supported changes — such as Lambda function code — it updates the resource directly through the service API and **skips CloudFormation entirely**, which is why it feels near-instant. Changes that can't be hotswapped (for example, adding a new resource or changing IAM) automatically fall back to a full CloudFormation deployment.
+
+> **Important — development only:**
+> - Hotswap deliberately creates **drift** between the deployed resource and the CloudFormation template. AWS recommends `cdk watch`/`--hotswap` for **dev iteration only**, never for staging or production. Do a normal `cdk deploy` (or `cdk deploy --express`) to bring the stack back in sync.
+> - Stop watching with `Ctrl+C`.
+
+**When to use which:**
+
+| Command | Use it for |
+|---------|-----------|
+| `cdk deploy` | Standard, fully-stabilized deploy (default; safe for any environment) |
+| `cdk deploy --express` | Faster iterative deploy that returns before full stabilization (dev) |
+| `cdk watch` | Continuous auto-redeploy on save, hotswapping code changes (dev inner loop) |
+
+**✅ Checkpoint:** You edited `lambda/hello.ts`, saved, and saw `cdk watch` redeploy without you running any command — and the new message is live.
+
+> **Using a named profile:** `cdk watch` accepts the same global credential
+> flags as any other CDK command. If you authenticated with an SSO profile in
+> section 1.3, pass it explicitly:
+> ```bash
+> cdk watch --profile <your-sso-profile>
+> ```
+> (or set `AWS_PROFILE` in your shell). The same `--profile` works for
+> `cdk deploy` and `cdk deploy --express`.
+
+### 5.6 `cdk watch` (hotswap) vs. Express mode — what's the difference?
+
+These two features both speed up your dev loop, but they work at **completely different layers**, and confusing them leads to the classic "my deploy said success but nothing is there" trap. Read this before relying on either.
+
+**Express mode (`--express`) — a faster CloudFormation.**
+Express mode still goes **through CloudFormation**. It creates and executes a real changeset, so it *creates, updates, and deletes resources correctly* — it simply reports success as soon as the configuration is applied, without waiting for full stabilization. Your CloudFormation template and the deployed resources stay **in sync**. It is safe to use for any change, including brand-new resources.
+
+**`cdk watch` hotswap — bypasses CloudFormation.**
+Hotswap does **not** go through CloudFormation for supported changes. It calls the service API directly (e.g., Lambda `UpdateFunctionCode`) to patch an **already-existing** resource. This is why it is near-instant — but it has two important consequences:
+
+1. **It only updates resources that already exist.** Hotswap **cannot reliably create new resources**. If a resource isn't in the deployed stack yet, hotswap has nothing to patch, CloudFormation reports `(no changes)`, and you get a green checkmark over a stack that was never actually built out.
+2. **It introduces drift.** The live resource no longer matches the CloudFormation template. CDK reminds you: *"Your next non-hotswap deployment ... should include `--revert-drift`."*
+
+> ⚠️ **The empty-stack trap.** If you run `cdk watch` on a stack whose resources
+> were never fully deployed, you may see output like:
+> ```
+> ✨  hotswap-deployment time: 0.92s
+> ✅  MksWkStack (no changes)
+> ```
+> That looks successful, but if you open the CloudFormation console and the
+> **Resources** tab shows only `CDKMetadata` — the Lambda, IAM role, and API
+> Gateway are **not there**. Hotswap silently did nothing useful because there
+> was no existing resource to patch. **Fix:** stop `cdk watch` (Ctrl+C) and run a
+> full deployment once so CloudFormation actually creates everything:
+> ```bash
+> cdk deploy --profile <your-profile>     # or: cdk deploy --express
+> ```
+> Verify the resources really exist:
+> ```bash
+> aws cloudformation describe-stack-resources \
+>   --stack-name <YourStack> --region <region> --profile <your-profile> \
+>   --query "StackResources[].{Logical:LogicalResourceId,Type:ResourceType,Status:ResourceStatus}" \
+>   --output table
+> ```
+> You should see `AWS::Lambda::Function`, `AWS::IAM::Role`, `AWS::ApiGateway::*`
+> — not just `CDKMetadata`.
+
+**The golden rule:**
+
+| Situation | Use |
+|-----------|-----|
+| **First deploy of a stack**, or you **added new resources** (Lambda, table, queue, IAM…) | `cdk deploy` (standard) or `cdk deploy --express` — goes through CloudFormation, creates resources correctly, no drift |
+| **Only changed code** in resources that already exist, and you want the tightest loop | `cdk watch` (hotswap) — fastest, but dev-only and creates drift |
+
+Rule of thumb: **create with CloudFormation (deploy/Express), iterate with hotswap (watch).** When in doubt, do a plain `cdk deploy` — it is always correct.
+
+| | `cdk deploy --express` | `cdk watch` (hotswap) |
+|---|---|---|
+| Path | Through CloudFormation | Bypasses CloudFormation (direct service API) |
+| Creates new resources | ✅ Yes | ❌ No (updates existing only) |
+| Causes drift | No | Yes |
+| Speed | Fast (skips stabilization wait) | Fastest (skips CFN entirely) |
+| Safe for staging/prod | Dev-focused (not recommended for prod) | ❌ Dev only, never prod |
 
 ---
 

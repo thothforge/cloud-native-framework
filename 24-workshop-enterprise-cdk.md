@@ -265,7 +265,7 @@ export class ObservableFunction extends Construct {
 
     this.function = new lambda.Function(this, 'Function', {
       functionName: props.functionName,
-      runtime: props.runtime ?? lambda.Runtime.NODEJS_20_X,
+      runtime: props.runtime ?? lambda.Runtime.NODEJS_24_X,
       architecture: lambda.Architecture.ARM_64, // Cost optimization (20% savings)
       handler: props.handler ?? 'index.handler',
       code: props.code,
@@ -345,7 +345,7 @@ test('SecureApi passes AwsSolutions checks', () => {
   Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
 
   const fn = new lambda.Function(stack, 'Handler', {
-    runtime: lambda.Runtime.NODEJS_20_X,
+    runtime: lambda.Runtime.NODEJS_24_X,
     handler: 'index.handler',
     code: lambda.Code.fromInline('exports.handler = async () => ({ statusCode: 200 })'),
   });

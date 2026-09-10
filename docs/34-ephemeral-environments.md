@@ -372,7 +372,7 @@ export class EphemeralCleanupStack extends cdk.Stack {
     // Lambda triggered on TTL expiration (DynamoDB Stream)
     const destroyerFn = new lambda.Function(this, 'StackDestroyer', {
       functionName: 'ephemeral-stack-destroyer',
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_24_X,
       handler: 'index.handler',
       code: lambda.Code.fromInline(`
         const { CloudFormationClient, DeleteStackCommand } = require('@aws-sdk/client-cloudformation');
@@ -415,7 +415,7 @@ export class EphemeralCleanupStack extends cdk.Stack {
     // Hourly scanner: register untracked STACK_LIFE-tagged stacks
     const scannerFn = new lambda.Function(this, 'StackScanner', {
       functionName: 'ephemeral-stack-scanner',
-      runtime: lambda.Runtime.NODEJS_20_X,
+      runtime: lambda.Runtime.NODEJS_24_X,
       handler: 'index.handler',
       code: lambda.Code.fromInline(`
         const { CloudFormationClient, ListStacksCommand, DescribeStacksCommand } = require('@aws-sdk/client-cloudformation');
