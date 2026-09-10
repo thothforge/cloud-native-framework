@@ -12,12 +12,12 @@
 3. [Zero-Trust Data Perimeter](#3-zero-trust-data-perimeter)
 4. [Data Classification](#4-data-classification)
 5. [AI Security](#5-ai-security)
-6. [Security in the Pipeline (AWS Continuum)](#6-security-in-the-pipeline)
+6. [Security in the Pipeline (AWS Continuum)](#6-security-in-the-pipeline-aws-continuum)
 7. [Secrets Management](#7-secrets-management)
 8. [WAF Configuration](#8-waf-configuration)
 9. [STRIDE Threat Model](#9-stride-threat-model)
 10. [Incident Response](#10-incident-response)
-11. [Security Checklist](#11-security-checklist)
+11. [Security Checklist](#12-security-checklist)
 
 ---
 
@@ -563,7 +563,7 @@ export function sanitizeUserInput(input: string): string {
 
   let sanitized = input;
   for (const pattern of dangerousPatterns) {
-    sanitized = sanitized.replace(pattern, '[FILTERED]');
+    sanitized = sanitized.replace(pattern, '\[FILTERED\]');
   }
 
   // Enforce max length

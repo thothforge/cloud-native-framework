@@ -44,12 +44,17 @@ nav = [
   { "Multi-Account Landing Zone" = "17-multi-account-landing-zone.md" },
   { "FinOps & Cost Governance" = "18-finops-cost-governance.md" },
   { "Disaster Recovery & Continuity" = "30-disaster-recovery-continuity.md" },
+  { "Ephemeral Environments & Concurrency" = "34-ephemeral-environments.md" },
   { "Reference Architecture" = "19-reference-architecture.md" },
   { "Recommendations" = "20-recommendations.md" },
   # --- ADOPTION & ONBOARDING ---
   { "Adoption Roadmap" = "21-adoption-roadmap.md" },
   { "Developer Onboarding" = "22-developer-onboarding.md" },
+  # --- INTELLIGENCE & AI BRAINS ---
+  { "Custom Intelligent AI Brains" = "32-custom-intelligent-ai-brains.md" },
+  { "Team Topologies, Roles & Permissions" = "33-team-topologies-roles.md" },
   # --- WORKSHOPS ---
+  { "Workshop 0: Foundations" = "35-workshop-foundations.md" },
   { "Workshop: Serverless End-to-End" = "23-workshop-serverless.md" },
   { "Workshop: Enterprise CDK" = "24-workshop-enterprise-cdk.md" },
   { "Workshop: ECS Backend" = "25-workshop-ecs-backend.md" },

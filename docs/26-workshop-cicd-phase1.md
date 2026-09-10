@@ -1,5 +1,14 @@
 # Workshop: CI/CD Phase 1 — Team-Level Pipelines
 
+> **Persona:** 👩‍💻 Developer + 👥 Team Lead (primary) · 🧑‍🔧 SME / Platform (secondary)
+> **Maturity level:** L1 → L2 (Team → Standardized)
+> **Prerequisite:** [Workshop: Serverless End-to-End](23-workshop-serverless.md)
+> **Leads to:** [Workshop: CI/CD Phase 2](27-workshop-cicd-phase2.md)
+>
+> **Suggested path by persona:**
+> - **Developer / Team Lead:** do the full workshop — this is how your team ships without manual deploys.
+> - **SME / Platform:** review the pipeline structure and the DevSecOps/cost gates; these become organization defaults in Phase 2.
+
 ## Overview
 
 This workshop builds a **team-level CI/CD pipeline** applying TPF practices (Trunk-based + Progressive rollouts + Feature toggles) with CDK Pipelines, canary deployments, Express mode acceleration, and ThothCTL DevSecOps workflow integration.
@@ -515,6 +524,53 @@ confirm_changeset = true    # Manual confirmation for prod
 - [ ] DORA metrics dashboard created
 - [ ] Deployment frequency tracked
 - [ ] MTTR measured (alarm → rollback complete)
+
+---
+
+## Teardown & Cost Guardrails
+
+> **Pipelines keep resources alive.** A self-mutating CDK Pipeline plus dev/staging/prod stages provisions CodePipeline, CodeBuild, cross-account roles, canary alarms, and Evidently projects. These persist until you remove them. Clean up when the workshop is done.
+
+### Set a budget guardrail
+
+```bash
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+aws budgets create-budget \
+  --account-id "$ACCOUNT_ID" \
+  --budget '{"BudgetName":"cicd-phase1-guardrail","BudgetLimit":{"Amount":"30","Unit":"USD"},"TimeUnit":"MONTHLY","BudgetType":"COST"}' \
+  --notifications-with-subscribers '[{"Notification":{"NotificationType":"ACTUAL","ComparisonOperator":"GREATER_THAN","Threshold":80,"ThresholdType":"PERCENTAGE"},"Subscribers":[{"SubscriptionType":"EMAIL","Address":"you@example.com"}]}]'
+```
+
+### Destroy pipeline and application
+
+```bash
+# Destroy the app stacks in each environment
+npx cdk destroy --all --context env=dev
+
+# Destroy the self-mutating pipeline LAST (it manages the other stacks)
+npx cdk destroy PipelineStack
+```
+
+> The pipeline stack owns a CodePipeline artifact S3 bucket and (with `crossAccountKeys: true`) KMS keys. If `cdk destroy` leaves the bucket, empty and remove it manually:
+> ```bash
+> aws s3 rm s3://<pipeline-artifact-bucket> --recursive && aws s3 rb s3://<pipeline-artifact-bucket>
+> ```
+
+### Remove feature flags and verify
+
+```bash
+# Evidently project created for feature flags
+aws cloudwatchevidently delete-project --project order-processing 2>/dev/null || true
+
+# Confirm no workshop stacks remain
+aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE \
+  --query "StackSummaries[?contains(StackName,'Pipeline') || contains(StackName,'OrderApi') || contains(StackName,'Dev') || contains(StackName,'Staging') || contains(StackName,'Prod')].StackName"
+
+# Remove the budget when done
+aws budgets delete-budget --account-id "$ACCOUNT_ID" --budget-name cicd-phase1-guardrail
+```
+
+**✅ Checkpoint:** Pipeline stack, per-environment app stacks, artifact bucket, and Evidently project are all removed.
 
 ---
 

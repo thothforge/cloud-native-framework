@@ -331,3 +331,178 @@ const denyDirectDeployScp = new organizations.CfnPolicy(this, 'DenyDirectDeploy'
   targetIds: ['ou-workload-id'], // Attach to Workload OU
 });
 ```
+
+
+---
+
+## 4. Resource Control Policies (RCPs)
+
+RCPs restrict which **external principals** can access resources within your organization — the complement to SCPs (which restrict what your principals can do).
+
+| Policy Type | Controls | Applied To |
+|------------|----------|-----------|
+| **SCPs** | What YOUR principals can do | Organization accounts |
+| **RCPs** | Who can access YOUR resources | Organization resources |
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyExternalAccess",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "*",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:PrincipalOrgID": "o-your-org-id"
+        },
+        "BoolIfExists": {
+          "aws:PrincipalIsAWSService": "false"
+        }
+      }
+    }
+  ]
+}
+```
+
+---
+
+## 5. Permission Boundaries
+
+Permission boundaries define the **maximum effective permissions** for IAM roles created by developers. Even if a role policy grants `s3:*`, the permission boundary can restrict it to specific buckets.
+
+```typescript
+const permissionBoundary = new iam.ManagedPolicy(this, 'DevBoundary', {
+  statements: [
+    new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'lambda:*', 'dynamodb:*', 'sqs:*', 'sns:*',
+        'events:*', 'logs:*', 'xray:*', 'cloudwatch:*',
+      ],
+      resources: ['*'],
+    }),
+    new iam.PolicyStatement({
+      effect: iam.Effect.DENY,
+      actions: ['iam:CreateUser', 'iam:CreateAccessKey', 'organizations:*'],
+      resources: ['*'],
+    }),
+  ],
+});
+```
+
+---
+
+## 6. Networking
+
+### VPC Architecture
+
+```mermaid
+graph TD
+    subgraph SharedVPC["Shared Services VPC"]
+        TGW["Transit Gateway"]
+        ENDPOINTS["VPC Endpoints (S3, DDB, SQS, etc.)"]
+    end
+    subgraph Workload["Workload VPCs"]
+        PRIVATE["Private Subnets Only"]
+        NAT["NAT Gateway (egress)"]
+    end
+    TGW --> Workload
+    PRIVATE --> ENDPOINTS
+```
+
+**Key principles:**
+- Serverless workloads use VPC endpoints (no NAT for AWS service calls)
+- VPC Lattice for service-to-service networking
+- No public subnets in workload accounts
+- Transit Gateway for cross-account connectivity when needed
+
+---
+
+## 7. Centralized Logging
+
+All accounts forward logs to a centralized Security/Audit account:
+
+| Log Type | Service | Destination |
+|----------|---------|-------------|
+| API calls | CloudTrail | Organization trail → S3 (log archive) |
+| VPC traffic | VPC Flow Logs | CloudWatch Logs → S3 |
+| DNS queries | Route 53 Resolver | CloudWatch Logs |
+| Security findings | SecurityHub | Delegated admin account |
+| Config compliance | AWS Config | Aggregator in security account |
+
+---
+
+## 8. Pipeline Account
+
+A dedicated account hosts all CI/CD pipelines, isolated from workload accounts:
+
+```mermaid
+graph LR
+    DEV_ACCOUNT["Dev Account"] 
+    STAGING_ACCOUNT["Staging Account"]
+    PROD_ACCOUNT["Prod Account"]
+    PIPELINE["Pipeline Account<br/>(CDK Pipelines)"]
+    
+    PIPELINE -->|"Cross-account deploy role"| DEV_ACCOUNT
+    PIPELINE -->|"Cross-account deploy role"| STAGING_ACCOUNT
+    PIPELINE -->|"Approval gate"| PROD_ACCOUNT
+```
+
+**CDK Pipelines cross-account setup:**
+- Pipeline account has `cdk-*-deploy-role` in each target account
+- SCPs allow only pipeline roles to deploy (deny direct human deploy)
+- Express mode for dev stages, standard + canary for production
+
+---
+
+## 9. Cost Management
+
+| Control | Implementation |
+|---------|---------------|
+| **Budget alerts** | AWS Budgets per account + OU-level aggregation |
+| **Cost allocation tags** | Mandatory tags enforced via SCP (deny untagged resources) |
+| **FinOps Agent** | Monitors anomalies, recommends optimizations |
+| **Reserved capacity** | Savings Plans at organization level (shared benefit) |
+| **Right-sizing** | Compute Optimizer recommendations + agent automation |
+
+---
+
+## 10. Bootstrap
+
+### CDK Bootstrap for Multi-Account
+
+```bash
+# Bootstrap each account with trust to pipeline account
+cdk bootstrap aws://DEV_ACCOUNT_ID/us-east-1 \
+    --trust PIPELINE_ACCOUNT_ID \
+    --cloudformation-execution-policies "arn:aws:iam::aws:policy/AdministratorAccess" \
+    --qualifier framework
+
+cdk bootstrap aws://STAGING_ACCOUNT_ID/us-east-1 \
+    --trust PIPELINE_ACCOUNT_ID \
+    --cloudformation-execution-policies "arn:aws:iam::aws:policy/AdministratorAccess" \
+    --qualifier framework
+
+cdk bootstrap aws://PROD_ACCOUNT_ID/us-east-1 \
+    --trust PIPELINE_ACCOUNT_ID \
+    --cloudformation-execution-policies "arn:aws:iam::aws:policy/AdministratorAccess" \
+    --qualifier framework
+```
+
+### Control Tower Account Factory
+
+```bash
+# Create new workload account via Control Tower
+aws controltower create-managed-account \
+    --account-name "my-new-service" \
+    --account-email "my-new-service@company.com" \
+    --organizational-unit-name "Workload"
+    
+# After provisioning, bootstrap for CDK
+cdk bootstrap aws://NEW_ACCOUNT_ID/us-east-1 \
+    --trust PIPELINE_ACCOUNT_ID \
+    --qualifier framework
+```

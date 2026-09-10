@@ -1,5 +1,14 @@
 # Workshop Phase 2: Enterprise-Grade CDK Adoption
 
+> **Persona:** 🧑‍🔧 SME / Platform Engineer (primary) · 👩‍💻 Developer (consumer of the output)
+> **Maturity level:** L2 → L3 (Standardized → Governed)
+> **Prerequisite:** [Workshop: Serverless End-to-End](23-workshop-serverless.md)
+> **Related:** [Workshop: CI/CD Phase 2](27-workshop-cicd-phase2.md)
+>
+> **Suggested path by persona:**
+> - **SME / Platform:** this is your workshop — you produce the construct library, registry, and governance layer.
+> - **Developer:** you mainly need Step 3 (consuming the published constructs). The rest is context for *why* your golden-path constructs exist.
+
 ## Overview
 
 Phase 2 elevates the project from a team-level application to **enterprise-grade infrastructure** by establishing:
@@ -821,6 +830,70 @@ flowchart LR
 | **L2: Standardized** | Private construct library, CodeArtifact, CDK Pipelines | + Projen + CodeArtifact + multi-account |
 | **L3: Governed** | OPA policies, SCPs, permission boundaries, continuous compliance | + AWS Config + ThothCTL policy repo + Continuum |
 | **L4: Optimized** | AI-driven cost optimization, auto-remediation, self-healing | + FinOps Agent + DevOps Agent + autonomous ops |
+
+---
+
+## Teardown & Cost Guardrails
+
+> **Enterprise-scale caution.** This workshop provisions resources that persist and can accrue cost or block account cleanup: CodeArtifact domain/repositories, multi-account CDK bootstrap stacks, CDK Pipelines, and Organizations policies (SCPs/RCPs). Tear down in the reverse order you created them.
+
+### Order of teardown matters
+
+```mermaid
+flowchart LR
+    A["1. Detach SCPs/RCPs<br/>from OUs"] --> B["2. Destroy app stacks<br/>(all accounts)"]
+    B --> C["3. Destroy pipeline stack"]
+    C --> D["4. Delete CodeArtifact<br/>repos + domain"]
+    D --> E["5. (Optional) remove<br/>bootstrap stacks"]
+```
+
+### 1. Detach and delete Organizations policies
+
+```bash
+# Detach before delete (policies cannot be deleted while attached)
+aws organizations detach-policy --policy-id <scp-id> --target-id <ou-id>
+aws organizations detach-policy --policy-id <rcp-id> --target-id <ou-id>
+aws organizations delete-policy --policy-id <scp-id>
+aws organizations delete-policy --policy-id <rcp-id>
+```
+
+> **High-risk — confirm first.** Detaching SCPs/RCPs removes guardrails from live accounts. Only do this in the sandbox org used for the workshop, never in a production organization.
+
+### 2. Destroy application and pipeline stacks
+
+```bash
+# In each workload account (dev/staging/prod)
+npx cdk destroy --all --context env=dev
+# Then the pipeline
+npx cdk destroy PipelineStack
+```
+
+### 3. Delete CodeArtifact (registry incurs storage/request cost)
+
+```bash
+aws codeartifact delete-repository --domain myorg --repository constructs
+aws codeartifact delete-repository --domain myorg --repository npm-store
+aws codeartifact delete-domain --domain myorg
+```
+
+### 4. (Optional) remove CDK bootstrap stacks
+
+```bash
+# CDKToolkit is reusable — only delete if you are done with CDK in these accounts.
+# The bootstrap S3 bucket may need emptying first.
+aws cloudformation delete-stack --stack-name CDKToolkit  # per account/region
+```
+
+### Verify
+
+```bash
+aws codeartifact list-domains
+aws organizations list-policies --filter SERVICE_CONTROL_POLICY --query "Policies[?Name=='DenyPublicS3']"
+aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE \
+  --query "StackSummaries[?contains(StackName,'Pipeline') || contains(StackName,'OrderApi')].StackName"
+```
+
+**✅ Checkpoint:** No workshop stacks, no CodeArtifact domain, and workshop SCPs/RCPs are detached and deleted.
 
 ---
 

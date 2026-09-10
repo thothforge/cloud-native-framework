@@ -1,5 +1,13 @@
 # Workshop: CI/CD Phase 2 — Enterprise Pipelines
 
+> **Persona:** 🧑‍🔧 SME / Platform + 🛡️ Security/Governance (primary) · 👩‍💻 Developer (aware, not hands-on)
+> **Maturity level:** L2 → L3 → L4 (Standardized → Governed → Autonomous)
+> **Prerequisite:** [Workshop: CI/CD Phase 1](26-workshop-cicd-phase1.md), [Workshop: Enterprise CDK](24-workshop-enterprise-cdk.md)
+>
+> **Suggested path by persona:**
+> - **SME / Platform / Security:** this is your workshop — SCPs/RCPs, supply-chain security, and policy-as-code gates are the org-level guardrails that make broad developer autonomy safe.
+> - **Developer:** you don't build this, but understanding it explains why your deploys are blocked/allowed the way they are.
+
 ## Overview
 
 Phase 2 elevates CI/CD to **enterprise-grade** with AWS frontier agents (Continuum, DevOps Agent, FinOps Agent), supply chain security, multi-account governance (SCPs + RCPs), and policy-as-code gates.
@@ -548,6 +556,79 @@ flowchart TD
 - [ ] Pipeline execution notifications (Slack)
 - [ ] Cost reports per deployment
 - [ ] Security posture dashboard (Continuum findings)
+
+---
+
+## Teardown & Cost Guardrails
+
+> **Highest blast radius in the series.** Phase 2 provisions multi-account pipelines, org-level SCPs/RCPs, Continuum/DevOps/FinOps agent integrations, artifact signing, and supply-chain infrastructure. Tear down carefully and in order, and only in a sandbox organization.
+
+### Teardown order
+
+```mermaid
+flowchart LR
+    A["1. Disable agents<br/>(Continuum/DevOps/FinOps)"] --> B["2. Detach SCPs/RCPs<br/>from OUs, then delete"]
+    B --> C["3. Destroy app +<br/>pipeline stacks (all accounts)"]
+    C --> D["4. Remove signing profiles,<br/>SBOM buckets, CodeArtifact"]
+    D --> E["5. (Optional) de-bootstrap"]
+```
+
+### 1. Disable frontier agents
+
+```bash
+# Remove agent integrations first so they don't fire alarms during teardown.
+# (Console or IaC, depending on how they were enabled)
+# - AWS DevOps Agent: remove repo/observability connections
+# - AWS FinOps Agent: disable anomaly monitors
+# - AWS Continuum: disable scheduled pen tests
+```
+
+### 2. Detach and delete Organizations policies
+
+```bash
+aws organizations detach-policy --policy-id <scp-id> --target-id <ou-id>
+aws organizations detach-policy --policy-id <rcp-id> --target-id <ou-id>
+aws organizations delete-policy --policy-id <scp-id>
+aws organizations delete-policy --policy-id <rcp-id>
+```
+
+> **High-risk — sandbox only.** These SCPs include `DenyDirectDeploy` and security-service protections. Detaching them in a real org removes live guardrails. Confirm you are in the workshop's sandbox organization before running.
+
+### 3. Destroy application and pipeline stacks
+
+```bash
+# Each workload account
+npx cdk destroy --all --context env=dev
+# Pipeline last
+npx cdk destroy PipelineStack
+```
+
+### 4. Remove supply-chain and registry resources
+
+```bash
+# Signing profiles
+aws signer cancel-signing-profile --profile-name OrgLambdaSigning
+
+# SBOM / signed-artifact buckets (empty then delete)
+aws s3 rm s3://artifacts-bucket --recursive && aws s3 rb s3://artifacts-bucket
+aws s3 rm s3://signed-bucket --recursive && aws s3 rb s3://signed-bucket
+
+# CodeArtifact (if not already removed in Workshop 24 teardown)
+aws codeartifact delete-repository --domain myorg --repository constructs 2>/dev/null || true
+aws codeartifact delete-domain --domain myorg 2>/dev/null || true
+```
+
+### Verify
+
+```bash
+aws organizations list-policies --filter SERVICE_CONTROL_POLICY \
+  --query "Policies[?contains(Name,'Deny')].Name"
+aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE \
+  --query "StackSummaries[?contains(StackName,'Pipeline') || contains(StackName,'OrderApi')].StackName"
+aws signer list-signing-profiles --query "profiles[?profileName=='OrgLambdaSigning']"
+```
+
+**✅ Checkpoint:** Agents disabled, workshop SCPs/RCPs deleted, all pipeline/app stacks gone, signing profiles and SBOM buckets removed.
 
 ---
 

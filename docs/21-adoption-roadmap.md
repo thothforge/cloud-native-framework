@@ -13,8 +13,8 @@
 3. [Key Differentiators](#3-key-differentiators)
 4. [Staged Adoption Roadmap](#4-staged-adoption-roadmap)
 5. [Adoption Checklists](#5-adoption-checklists)
-6. [ROI Metrics & Measurement](#6-roi-metrics--measurement)
-7. [Common Pitfalls & Mitigations](#7-common-pitfalls--mitigations)
+6. [ROI Metrics & Measurement](#6-roi-metrics-measurement)
+7. [Common Pitfalls & Mitigations](#7-common-pitfalls-mitigations)
 
 ---
 

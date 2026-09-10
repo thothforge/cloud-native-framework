@@ -1,5 +1,14 @@
 # Workshop: End-to-End Serverless Application with AI-DLC & ThothCTL
 
+> **Persona:** 👩‍💻 Developer (primary) · 🧑‍🔧 SME / Platform (secondary)
+> **Maturity level:** L1 (Team)
+> **Prerequisite:** [Workshop 0: Foundations](35-workshop-foundations.md) — complete it first if you have never deployed CDK.
+> **Leads to:** [Workshop: CI/CD Phase 1](26-workshop-cicd-phase1.md)
+>
+> **Suggested path by persona:**
+> - **Developer:** do the full workshop hands-on (Phases 1–4).
+> - **SME / Platform:** skim Phase 1 (methodology), focus on the governance/spaces setup (Step 1.2b) and the security/cost gates — these are the controls that let you grant developers autonomy safely.
+
 ## Overview
 
 This workshop applies **every principle and practice** from this framework to build a production-ready serverless application from scratch using:
@@ -725,6 +734,63 @@ flowchart TD
 | **Beginner** | 1 | Scaffold + basic deploy + security scan |
 | **Intermediate** | 2-3 | AI-DLC workflow + CDK Pipelines + canary |
 | **Advanced** | 4+ | Full DevSecOps + drift + AI agents + policy-as-code |
+
+---
+
+## Teardown & Cost Guardrails
+
+> **Do not skip this.** This workshop deploys API Gateway, Lambda, DynamoDB, Step Functions, EventBridge, and (optionally) Bedrock integrations across one or more environments. Most scale to zero, but leaving them running — especially provisioned resources or multiple environments — accrues cost. Always clean up when done.
+
+### Set a budget guardrail before deploying
+
+```bash
+# Lab-scale monthly budget with an alert (adjust amount/email)
+ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+aws budgets create-budget \
+  --account-id "$ACCOUNT_ID" \
+  --budget '{"BudgetName":"orders-api-guardrail","BudgetLimit":{"Amount":"20","Unit":"USD"},"TimeUnit":"MONTHLY","BudgetType":"COST"}' \
+  --notifications-with-subscribers '[{"Notification":{"NotificationType":"ACTUAL","ComparisonOperator":"GREATER_THAN","Threshold":80,"ThresholdType":"PERCENTAGE"},"Subscribers":[{"SubscriptionType":"EMAIL","Address":"you@example.com"}]}]'
+```
+
+For organization-wide cost governance (anomaly detection, FinOps Agent), see [FinOps & Cost Governance](18-finops-cost-governance.md).
+
+### Destroy the application
+
+```bash
+# Destroy all stacks in the environment you deployed
+npx cdk destroy --all --context env=dev
+
+# Faster teardown with Express mode (dev only)
+npx cdk destroy --all --context env=dev --express
+```
+
+### Verify nothing is left behind
+
+```bash
+# No workshop stacks should remain
+aws cloudformation list-stacks \
+  --stack-status-filter CREATE_COMPLETE UPDATE_COMPLETE \
+  --query "StackSummaries[?contains(StackName,'OrderProcessing') || contains(StackName,'OrderApi')].StackName"
+
+# Check for retained resources (DynamoDB tables / log groups may use RETAIN policies)
+aws dynamodb list-tables --query "TableNames[?contains(@,'orders')]"
+aws logs describe-log-groups --query "logGroups[?contains(logGroupName,'CreateOrder') || contains(logGroupName,'OrderProcessing')].logGroupName"
+```
+
+> **Watch for RETAIN policies.** Enterprise constructs often set `RemovalPolicy.RETAIN` on stateful resources (DynamoDB tables, log groups, S3 buckets) so `cdk destroy` intentionally leaves them. Delete these manually if you truly want a clean account:
+> ```bash
+> aws dynamodb delete-table --table-name <orders-table-name>
+> ```
+
+### Optional: remove the budget and feature flags
+
+```bash
+aws budgets delete-budget --account-id "$ACCOUNT_ID" --budget-name orders-api-guardrail
+# Evidently project (if created in Operations phase)
+aws cloudwatchevidently delete-project --project order-processing 2>/dev/null || true
+```
+
+**✅ Checkpoint:** No `OrderProcessing`/`OrderApi` stacks remain and no unexpected tables/log groups persist.
 
 ---
 

@@ -1,5 +1,10 @@
 # Workshop: Micro-Frontends on AWS
 
+> **Persona:** 👩‍💻 Frontend Developer + 👥 Team Lead (primary) · 🧑‍🔧 SME / Platform (hosting decisions)
+> **Maturity level:** Parallel track (optional) — complements the L1–L3 backend series
+> **Prerequisite:** Familiarity with CDK from [Workshop 0](35-workshop-foundations.md) / [Workshop 23](23-workshop-serverless.md); a frontend framework (React/Vue).
+> **Note:** This is an **optional parallel track**, not part of the linear backend maturity path. It fits naturally if a frontend (e.g., an Orders UI) consumes the Order Processing API built in Workshop 23.
+
 ## Overview
 
 This workshop covers building **multi-team frontend applications** using micro-frontend architecture on AWS, with clear guidance on when to use Amplify Gen 2 vs CloudFront + S3.
@@ -518,3 +523,41 @@ const rum = initRUM({
 - [ ] Error tracking with MFE attribution
 - [ ] Load performance per remote
 - [ ] Cache hit ratio monitored
+
+---
+
+## Teardown & Cost Guardrails
+
+> **CloudFront + S3 + RUM persist and cost money.** A CloudFront distribution, multiple S3 origin buckets, CloudWatch RUM app monitors, and (optionally) Lambda@Edge functions keep billing until removed. Lambda@Edge replicas in particular can take time to delete. Clean up when done.
+
+### Destroy the infrastructure
+
+```bash
+# Empty S3 origin buckets first (CDK/CloudFront won't delete non-empty buckets)
+for b in app-shell mfe-orders mfe-payments mfe-catalog; do
+  aws s3 rm "s3://$b" --recursive 2>/dev/null || true
+done
+
+# Destroy the CDK stack (CloudFront distribution + buckets + behaviors)
+npx cdk destroy --all
+```
+
+> **Lambda@Edge note:** if you used edge composition, replicated functions cannot be deleted until CloudFront finishes removing replicas (can take up to a few hours). If `cdk destroy` reports a `Lambda@Edge` deletion error, wait and re-run `cdk destroy`.
+
+### Remove RUM monitors and verify
+
+```bash
+# Delete CloudWatch RUM app monitor(s)
+aws rum delete-app-monitor --name app-monitor 2>/dev/null || true
+
+# Confirm the distribution is gone
+aws cloudfront list-distributions \
+  --query "DistributionList.Items[?Comment=='MFEDistribution'].Id" --output text
+
+# Confirm no origin buckets remain
+aws s3 ls | grep -E 'app-shell|mfe-' || echo "No MFE buckets remain"
+```
+
+**✅ Checkpoint:** CloudFront distribution deleted, all MFE S3 buckets removed, RUM monitors deleted, no Lambda@Edge replicas remaining.
+
+> For organization-wide cost governance, see [FinOps & Cost Governance](18-finops-cost-governance.md).

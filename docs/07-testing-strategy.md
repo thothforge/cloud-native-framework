@@ -11,7 +11,7 @@
 1. [Philosophy](#philosophy)
 2. [Testing Pyramid for Serverless](#testing-pyramid-for-serverless)
 3. [Testing by Hexagonal Architecture Layer](#testing-by-hexagonal-architecture-layer)
-4. [Tools & Infrastructure](#tools--infrastructure)
+4. [Tools & Infrastructure](#tools-infrastructure)
 5. [Contract Testing](#contract-testing)
 6. [Chaos Testing](#chaos-testing)
 7. [Load Testing](#load-testing)

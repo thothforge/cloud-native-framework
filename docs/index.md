@@ -35,6 +35,10 @@ flowchart TD
         SEC["Security<br/>(Continuum, Guardrails, RCPs)"]
         AIOPS["AI Operations<br/>(DevOps Agent, FinOps Agent)"]
     end
+    subgraph Intelligence["INTELLIGENCE LAYER"]
+        BRAIN["Custom AI Brain<br/>(Knowledge Bases, AgentCore Memory, MCP)"]
+        AGENTS["Agentic Platform<br/>(Strands SDK, AgentCore Runtime)"]
+    end
     subgraph Methodology["METHODOLOGY & TOOLS"]
         AIDLC["AI-DLC<br/>(Inception → Construction → Operations)"]
         THOTH["ThothCTL<br/>(Platform Engineering CLI)"]
@@ -49,7 +53,8 @@ flowchart TD
 
     Principles --> Infrastructure
     Infrastructure --> Delivery
-    Delivery --> Methodology
+    Delivery --> Intelligence
+    Intelligence --> Methodology
     Methodology --> Workshops
 ```
 
@@ -94,8 +99,16 @@ kiro-cli chat
 | [Observability](15-observability.md) | OpenTelemetry (ADOT), Lambda Powertools, Application Signals, Frontier Agents |
 | [AI/ML Integration](14-ai-ml.md) | Bedrock, AgentCore, Strands SDK, Guardrails, RAG patterns |
 | [CloudFormation Express](10-cfn-express.md) | How Express mode changes the IaC landscape |
+| [Ephemeral Environments & Concurrency](34-ephemeral-environments.md) | Per-developer sandboxes, per-PR environments, agent isolation, TTL auto-cleanup, cost guardrails — implementation patterns for developer and agent concurrency |
 | [Reference Architecture](19-reference-architecture.md) | E-commerce, SaaS, IoT — complete stack diagrams |
 | [Recommendations](20-recommendations.md) | Final recommendations by team type and application |
+
+### Investigation & Intelligence
+
+| Document | Description |
+|----------|-------------|
+| [Custom Intelligent AI Brains](32-custom-intelligent-ai-brains.md) | How organizations build shared, learning memory layers (AI Brains) to support the entire product lifecycle — architecture, implementation on AWS, case studies (Peloton, Meta, McKinsey), and adoption roadmap |
+| [Team Topologies, Roles & Permissions](33-team-topologies-roles.md) | Modern team structures, new AI-era roles (Intent Engineer, AgentOps, Context Engineer), 3-tier decision authority, RACI matrix, AWS permissions model (IAM + Cedar), and staged adoption path |
 
 ### Principles & Patterns
 
@@ -115,6 +128,7 @@ kiro-cli chat
 
 | Document | Description |
 |----------|-------------|
+| [Workshop 0: Foundations](35-workshop-foundations.md) | Your first serverless deploy — one Lambda + HTTP API with plain CDK, deploy → verify → destroy. Start here if you're new to IaC. |
 | [Workshop: Serverless End-to-End](23-workshop-serverless.md) | Lambda + CDK + AI-DLC + ThothCTL — full application from scratch |
 | [Workshop: Enterprise CDK](24-workshop-enterprise-cdk.md) | Private constructs, CodeArtifact, Projen, multi-account, RCPs |
 | [Workshop: ECS Backend](25-workshop-ecs-backend.md) | Containers, ECS Express Mode, Docker Compose → cloud, Service Connect |
@@ -135,6 +149,7 @@ kiro-cli chat
 | **Events** | EventBridge | Async backbone (Bus + Pipes + Scheduler) |
 | **Data** | DynamoDB + Aurora Serverless v2 | NoSQL (default) + SQL (when needed) |
 | **AI/ML** | Bedrock + AgentCore + Strands | Foundation models + agent runtime + agent SDK |
+| **AI Brain** | Knowledge Bases + AgentCore Memory + MCP | Organizational learning memory for agents + humans |
 | **Observability** | OpenTelemetry (ADOT) + Powertools | Vendor-neutral traces/metrics/logs |
 | **Security** | Continuum + Guardrails + cdk-nag | Continuous pen testing + AI safety + compliance |
 | **Operations** | DevOps Agent + FinOps Agent | Autonomous incident investigation + cost monitoring |
@@ -181,12 +196,14 @@ flowchart LR
 
 | Your Goal | Start Here |
 |-----------|-----------|
+| New to AWS IaC — first deploy | [Workshop 0: Foundations](35-workshop-foundations.md) |
 | Build a new serverless app | [Workshop: Serverless End-to-End](23-workshop-serverless.md) |
 | Build a container-based backend | [Workshop: ECS Backend](25-workshop-ecs-backend.md) |
 | Set up enterprise CI/CD | [Workshop: CI/CD Phase 1](26-workshop-cicd-phase1.md) |
 | Understand architecture decisions | [Architecture Principles](01-architecture-principles.md) |
 | Learn software design patterns | [Software Architecture Patterns](02-software-architecture-patterns.md) |
 | Set up organizational governance | [Workshop: Enterprise CDK](24-workshop-enterprise-cdk.md) |
+| Build an organizational AI Brain | [Custom Intelligent AI Brains](32-custom-intelligent-ai-brains.md) |
 
 ---
 
