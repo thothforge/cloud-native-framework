@@ -180,9 +180,18 @@ per-PR) created on demand and torn down automatically. Learn more:
 through shared ownership of cost and usage. Learn more:
 [FinOps & Cost Governance](18-finops-cost-governance.md).
 
+**IPAM (VPC IP Address Manager)** — An AWS feature that plans, tracks, and
+monitors public and private IP usage across an organization using hierarchical
+pools, preventing overlapping CIDRs that break Transit Gateway routing and VPC
+peering. Learn more: [Multi-Account Landing Zone](17-multi-account-landing-zone.md).
+
 **Permission Boundary** — An IAM feature that caps the maximum permissions an IAM
 principal can have, regardless of its attached policies. Learn more:
 [Multi-Account Landing Zone](17-multi-account-landing-zone.md).
+
+**RAM (Resource Access Manager)** — An AWS service for securely sharing resources
+(e.g. Transit Gateways, VPC subnets, IPAM pools) across accounts or an entire AWS
+Organization. Learn more: [Multi-Account Landing Zone](17-multi-account-landing-zone.md).
 
 **RCP (Resource Control Policy)** — An organization policy that restricts which
 external principals can access your resources (the complement to SCPs). Learn
@@ -196,12 +205,23 @@ Recovery Point Objective (how much data loss is tolerable). Learn more:
 available permissions for accounts in an AWS Organization. Learn more:
 [Multi-Account Landing Zone](17-multi-account-landing-zone.md).
 
+**Shared VPC** — A pattern where one owner account creates and manages a VPC and
+shares its subnets (via RAM) into participant accounts, which launch their own
+resources there — giving implicit intra-VPC routing with account-level resource
+separation. An alternative to Transit Gateway for tightly-interconnected teams.
+Learn more: [Multi-Account Landing Zone](17-multi-account-landing-zone.md).
+
 **SLO / SLI** — Service Level Objective (target for reliability) and Service Level
 Indicator (the measured signal). Learn more: [Observability](15-observability.md).
 
 **TPF (Trunk-based, Progressive rollout, Feature toggles)** — The framework's
 deployment model combining trunk-based development, progressive delivery, and
 feature flags. Learn more: [DevOps & CI/CD (TPF)](06-devops-cicd.md).
+
+**Transit Gateway (TGW)** — A central router that connects many VPCs and on-prem
+networks, shared across accounts via RAM. Uses custom route tables to segment and
+isolate traffic domains (e.g. keep dev VPCs from reaching prod). Learn more:
+[Multi-Account Landing Zone](17-multi-account-landing-zone.md).
 
 ---
 

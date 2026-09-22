@@ -397,28 +397,87 @@ const permissionBoundary = new iam.ManagedPolicy(this, 'DevBoundary', {
 
 ## 6. Networking
 
-### VPC Architecture
+Networking is centralized in a dedicated **Network account** in the Infrastructure OU. Workload teams own their applications; the platform/network team owns connectivity, IP planning, egress, and traffic inspection. This separates duties, contains blast radius, and avoids duplicating expensive shared infrastructure (NAT gateways, firewalls) in every account.
+
+### Network Account — Inbound / Outbound Separation
+
+The AWS Security Reference Architecture recommends splitting traffic into separate **inbound** and **outbound** VPCs in the Network account. Inbound (ingress) traffic is treated as higher-risk and gets dedicated routing, monitoring, and inspection; outbound (egress) is centralized so spoke VPCs need no NAT gateways of their own.
 
 ```mermaid
 graph TD
-    subgraph SharedVPC["Shared Services VPC"]
-        TGW["Transit Gateway"]
-        ENDPOINTS["VPC Endpoints (S3, DDB, SQS, etc.)"]
+    subgraph NetworkAccount["NETWORK ACCOUNT (Infrastructure OU)"]
+        INGRESS["Ingress VPC<br/>(ALB/NLB + Network Firewall)"]
+        EGRESS["Egress VPC<br/>(centralized NAT + inspection)"]
+        TGW["Transit Gateway<br/>(shared via RAM)"]
+        RESOLVER["Route 53 Resolver<br/>endpoints"]
+        IPAM["IPAM (delegated admin)"]
     end
-    subgraph Workload["Workload VPCs"]
-        PRIVATE["Private Subnets Only"]
-        NAT["NAT Gateway (egress)"]
+    subgraph Workload["WORKLOAD ACCOUNTS"]
+        WVPC["Workload VPCs<br/>Private subnets only"]
+        ENDPOINTS["VPC / Gateway Endpoints<br/>(S3, DDB, SQS, ...)"]
     end
-    TGW --> Workload
-    PRIVATE --> ENDPOINTS
+    TGW --> INGRESS
+    TGW --> EGRESS
+    TGW --> WVPC
+    WVPC --> ENDPOINTS
+    WVPC -.->|"egress via Network account"| EGRESS
 ```
 
 **Key principles:**
 
-- Serverless workloads use VPC endpoints (no NAT for AWS service calls)
-- VPC Lattice for service-to-service networking
-- No public subnets in workload accounts
-- Transit Gateway for cross-account connectivity when needed
+- Serverless workloads reach AWS services through VPC/Gateway endpoints (no NAT for AWS API calls)
+- No public subnets in workload accounts — ingress/egress live in the Network account
+- Centralized egress: spoke VPCs route internet-bound traffic through the egress VPC, so no per-account NAT
+- Transit Gateway (shared via AWS RAM) for cross-account/on-prem connectivity, with **custom route tables** to isolate domains (e.g., dev VPCs cannot reach prod through the TGW)
+- VPC Lattice for application-layer service-to-service networking
+
+### Connectivity Model — Transit Gateway vs Shared VPC
+
+Two "sharing" mechanisms solve different problems and are often combined. Transit Gateway *routes between* independent VPCs; Shared VPC (via RAM) lets multiple accounts *build into the same* VPC.
+
+| Option | Use when | Trade-off |
+|--------|----------|-----------|
+| **VPC Peering** | A handful of VPCs, simple 1:1 connectivity | Cheap; no transitive routing, doesn't scale |
+| **Transit Gateway** | Many VPCs + on-prem, need traffic segmentation | Scales to thousands of VPCs; per-attachment + data-processing cost, more ops |
+| **Shared VPC (RAM subnet sharing)** | Teams need tight interconnectivity with central network management | Implicit intra-VPC routing (no peering/TGW hops); owner controls the VPC, so less per-team network isolation |
+| **PrivateLink** | Expose a *single service* privately | Solves service access, not whole-network joining |
+
+**Shared VPC** fits when network isolation between teams need not be strict, but account-level resource and IAM separation must be: one owner account creates and manages the VPC, then shares **subnets** into participant accounts, which launch their own resources there. Constrain who can share what with SCPs. **Transit Gateway** fits when each team needs its own VPC but you still want centrally-governed, segmented connectivity between them.
+
+### Security Groups Across Accounts
+
+- **Shared VPC:** the VPC owner can share a security group with participant accounts (via AWS Organizations); participants attach it to resources they launch in the shared subnets — centrally managed rules, per-account resources.
+- **Across Transit Gateway:** security-group *referencing* lets a rule reference a security group in another VPC across the TGW instead of hard-coding CIDR ranges. This eases peering→TGW migration and improves posture at scale by managing rules by SG identity rather than IP ranges.
+
+### IP Address Management (IPAM)
+
+Amazon VPC **IPAM** plans, tracks, and monitors public and private IP usage across the whole organization. It prevents the classic multi-account failure mode — **overlapping CIDRs**, which silently break Transit Gateway routing and VPC peering. This matters especially for serverless estates with many [ephemeral / per-PR environments](34-ephemeral-environments.md), which allocate and release VPC/ENI address space rapidly.
+
+```mermaid
+graph TD
+    TOP["Top-level pool<br/>(organization CIDR)"]
+    R1["Regional pool<br/>us-east-1"]
+    R2["Regional pool<br/>eu-west-1"]
+    BU1["Business-unit pool<br/>payments"]
+    BU2["Business-unit pool<br/>platform"]
+    ENV1["Environment pool<br/>prod"]
+    ENV2["Environment pool<br/>dev / ephemeral"]
+    TOP --> R1
+    TOP --> R2
+    R1 --> BU1
+    R1 --> BU2
+    BU1 --> ENV1
+    BU1 --> ENV2
+```
+
+**Practices:**
+
+- **Hierarchical pools** — top-level → per-Region → per-business-unit → per-environment. New VPCs draw non-overlapping CIDRs automatically from the correct pool.
+- **Delegated admin** — a member account (typically the Network account) is delegated as the IPAM admin and owns allocation and monitoring org-wide.
+- **Compliance monitoring** — IPAM watches CIDRs for overlap and for compliance with each pool's allocation rules, at both VPC and subnet level.
+- **Predictable public IPs** — IPAM can supply predictable IP blocks for internet-facing ALBs and integrates with NAT gateway + prefix lists for scalable IPv4.
+
+> **Sources:** [SRA — Network account](https://docs.aws.amazon.com/prescriptive-guidance/latest/security-reference-architecture/network.html), [Building a Scalable Multi-VPC Network (whitepaper)](https://docs.aws.amazon.com/whitepapers/latest/building-scalable-secure-multi-vpc-network-infrastructure/welcome.html), [VPC sharing best practices](https://aws.amazon.com/blogs/networking-and-content-delivery/vpc-sharing-key-considerations-and-best-practices/), [Security group referencing for Transit Gateway](https://aws.amazon.com/blogs/networking-and-content-delivery/introducing-security-group-referencing-for-aws-transit-gateway/), [IPAM (prescriptive guidance)](https://docs.aws.amazon.com/prescriptive-guidance/latest/robust-network-design-control-tower/ipam.html), [Multi-Region IPAM architecture](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/multi-region-ipam-architecture.html). Content was rephrased for compliance with licensing restrictions.
 
 ---
 
