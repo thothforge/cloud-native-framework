@@ -143,11 +143,14 @@ with CloudFormation Hooks for deploy-time enforcement. Learn more:
 [Security Baseline](16-security-baseline.md).
 
 **CloudFormation Hooks** — Policy evaluations that CloudFormation invokes itself
-on every stack create/update/change-set operation, for any principal — the
-**deploy-time (provider-side)** control point that cannot be bypassed by leaving
-the pipeline. Implemented as Guard Hooks (cfn-guard rulesets) or Lambda Hooks
-(custom logic), typically run in `WARN` then `FAIL` mode. Complements cdk-nag
-(synth-time) and ThothCTL (CI). Learn more: [DevOps & CI/CD (TPF)](06-devops-cicd.md).
+on the stack operations you target (`STACK`, `RESOURCE`, `CHANGE_SET`,
+`CLOUD_CONTROL`), in the accounts/Regions where the Hook is registered — the
+**deploy-time (provider-side)** control point that runs regardless of who
+initiates the deployment (CDK, SAM, native CFN, console, StackSets). Implemented
+as Guard Hooks (`AWS::CloudFormation::GuardHook`, cfn-guard rulesets) or Lambda
+Hooks (`AWS::CloudFormation::LambdaHook`, custom logic), typically run in `WARN`
+then `FAIL` mode. Complements cdk-nag (synth-time) and ThothCTL (CI). Learn more:
+[DevOps & CI/CD (TPF)](06-devops-cicd.md).
 
 **cfn-guard** — AWS's open-source policy-as-code engine that validates
 CloudFormation templates and resource configurations against declarative rules;

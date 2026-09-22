@@ -352,46 +352,76 @@ flowchart LR
         THOTH["ThothCTL / Checkov / Trivy / OPA<br/>template + dependency scan"]
     end
     subgraph L3["3 · DEPLOY-TIME (provider side)"]
-        HOOK["CloudFormation Hooks<br/>invoked by CFN on every stack op"]
+        HOOK["CloudFormation Hooks<br/>invoked by CFN on targeted stack ops"]
     end
-    NAG -->|"can be skipped<br/>if synth is bypassed"| L2
-    THOTH -->|"can be skipped<br/>if pipeline is bypassed"| L3
-    HOOK -->|"cannot be bypassed —<br/>runs inside CloudFormation"| DEPLOY["Resources provisioned"]
+    NAG -->|"skipped if synth<br/>is bypassed"| L2
+    THOTH -->|"skipped if pipeline<br/>is bypassed"| L3
+    HOOK -->|"runs inside CloudFormation<br/>for the operations you target"| DEPLOY["Resources provisioned"]
 ```
 
 | Layer | Control | Runs at | Bypassable? | Catches |
 |-------|---------|---------|-------------|---------|
 | 1 · Synth-time | **cdk-nag** | `cdk synth` on the developer/pipeline machine | Yes — if someone deploys a template not produced by your CDK app | Insecure construct configuration before it's even a template |
 | 2 · CI scan | **ThothCTL / Checkov / OPA** | CI pipeline stage | Yes — if the change reaches the account outside the pipeline | Policy, IaC, dependency and cost issues on the reviewed change |
-| 3 · Deploy-time | **CloudFormation Hooks** | Inside CloudFormation, on every `CreateStack` / `UpdateStack` / `ChangeSet` (and CreateChangeSet) — for **any** principal | **No** — CFN invokes the hook regardless of origin | Non-compliant resources at the moment of provisioning; the enforcement backstop |
+| 3 · Deploy-time | **CloudFormation Hooks** | Inside CloudFormation, on the operations you target (`STACK`, `RESOURCE`, `CHANGE_SET`, `CLOUD_CONTROL`) in the accounts/Regions where the Hook is registered | Not by the toolchain — CFN invokes the Hook regardless of who initiated the stack operation (CDK, SAM, native CFN, console, StackSets) | Non-compliant resources at provisioning time; the enforcement backstop behind the earlier layers |
 
 ### CloudFormation Hooks — the deploy-time backstop
 
-A [CloudFormation Hook](https://docs.aws.amazon.com/cloudformation-cli/latest/hooks-userguide/hooks-structure.html) is a policy evaluation that CloudFormation runs **itself**, before it provisions or updates resources. Because it lives in the CloudFormation registry (per account/region) and not in the developer's toolchain, it applies uniformly to CDK, SAM, native CFN, StackSets, and console-initiated stack operations. It is the one control point that a developer or agent **cannot skip by leaving the golden path.**
+A [CloudFormation Hook](https://docs.aws.amazon.com/cloudformation-cli/latest/hooks-userguide/hooks-structure.html) is a policy evaluation that CloudFormation runs **itself**, before it provisions or updates the targeted resources. Because a Hook is registered in the CloudFormation registry per account/Region — not in the developer's toolchain — it applies to whatever stack operations you target it at, no matter how the deployment was initiated (CDK, SAM, native CFN, console, or StackSets). That makes it the control point a developer or agent cannot skip simply by leaving the golden path. You still scope it explicitly: it runs for the `TargetOperations` you list, filtered by `StackFilters`/`TargetFilters`, and only in the accounts/Regions where you register it.
 
-Two implementation styles:
+Two native Hook types (both created directly from CloudFormation templates):
 
-- **Guard Hooks (no code):** point a hook at a [cfn-guard](https://docs.aws.amazon.com/cloudformation-cli/latest/hooks-userguide/hooks-guard.html) ruleset in S3. Best for declarative resource-configuration policy (encryption, public-access, tagging, allowed instance/runtime).
-- **Lambda Hooks (custom logic):** a Lambda evaluates the target and returns `SUCCESS` / `FAILURE`. Best for cross-resource or organization-specific logic.
+- **Guard Hooks (`AWS::CloudFormation::GuardHook`, no code):** point the Hook at a [cfn-guard](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html) ruleset in S3. Best for declarative resource-configuration policy (encryption, public-access, tagging, allowed runtimes).
+- **Lambda Hooks (`AWS::CloudFormation::LambdaHook`, custom logic):** a Lambda evaluates the target and returns a pass/fail result. Best for cross-resource or organization-specific logic.
 
-Hooks run in two modes — `WARN` (log the finding, allow the deploy) for rollout, then `FAIL` (block the stack operation) for enforcement.
+`FailureMode` controls behavior: `WARN` (log the finding, allow the operation) during rollout, then `FAIL` (block the stack operation) to enforce.
 
 ```yaml
 # Guard Hook — enforce the same intent as cdk-nag, but at deploy time,
-# for every principal in the account (not just golden-path deploys).
+# for stack operations in this account/Region regardless of who initiates them.
 Resources:
+  HookExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: hooks.cloudformation.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: read-guard-rules
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: [s3:GetObject, s3:GetObjectVersion, s3:ListBucket]
+                Resource:
+                  - arn:aws:s3:::org-cfn-hooks
+                  - arn:aws:s3:::org-cfn-hooks/*
+              - Effect: Allow
+                Action: s3:PutObject
+                Resource: arn:aws:s3:::org-cfn-hook-reports/*
+
   SecurityGuardHook:
     Type: AWS::CloudFormation::GuardHook
     Properties:
-      Alias: Org::Security::BaselineGuardHook
+      Alias: Private::Security::BaselineHook   # Name1::Name2::Name3, must not begin with "AWS"
       ExecutionRole: !GetAtt HookExecutionRole.Arn
-      FailureMode: FAIL          # WARN first during rollout, then FAIL to enforce
+      FailureMode: WARN          # start in WARN during rollout, switch to FAIL to enforce
       HookStatus: ENABLED
-      TargetOperations: [STACK, CHANGE_SET, RESOURCE]
+      TargetOperations: [RESOURCE, STACK]   # valid: STACK | RESOURCE | CHANGE_SET | CLOUD_CONTROL
+      TargetFilters:
+        Actions: [CREATE, UPDATE, DELETE]
       RuleLocation:
         Uri: s3://org-cfn-hooks/guard-rules/security-baseline.guard
+      LogBucket: org-cfn-hook-reports
       StackFilters:
-        FilteringCriteria: ALL   # applies to all stacks unless excluded
+        FilteringCriteria: ALL
+        StackNames:
+          Exclude:
+            - !Ref AWS::StackName   # don't evaluate the Hook's own stack
 ```
 
 ```guard
