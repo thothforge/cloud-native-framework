@@ -75,6 +75,7 @@ Beyond TPF, Octopus Deploy defines **Ten Pillars** that ensure deployments are e
 > **"Deploy the same thing, in the same way, every time."**
 
 A release must capture a snapshot of:
+
 1. The **application version** (immutable artifact)
 2. The **deployment process** (versioned pipeline definition)
 3. The **variables** for the target environment
@@ -537,6 +538,7 @@ flowchart LR
 ## IX. DevOps Checklist (Starting a New Project)
 
 ### Pipeline Setup
+
 - [ ] CDK Pipelines (self-mutating) or SAM Pipelines configured
 - [ ] Dev / Staging / Prod environments with separate AWS accounts
 - [ ] Express mode enabled for development stages
@@ -545,6 +547,7 @@ flowchart LR
 - [ ] Pipeline-as-code committed alongside application
 
 ### Deployment Safety
+
 - [ ] Canary deployment strategy (`Canary10Percent5Minutes`)
 - [ ] CloudWatch Alarms trigger auto-rollback
 - [ ] Pre/post-traffic hooks for verification
@@ -552,6 +555,7 @@ flowchart LR
 - [ ] Rollback tested and verified in staging
 
 ### Supply Chain
+
 - [ ] Dependency scanning in CI (`npm audit` / `pip-audit`)
 - [ ] Signed artifacts (AWS Signer)
 - [ ] SBOM generated per release
@@ -559,12 +563,14 @@ flowchart LR
 - [ ] Secrets in Secrets Manager (never in code or env vars)
 
 ### Measurement
+
 - [ ] DORA metrics tracked (frequency, lead time, failure rate, MTTR)
 - [ ] Pipeline performance dashboard
 - [ ] Deployment notifications to Slack/Teams
 - [ ] AWS DevOps Agent deployed for release management
 
 ### Standards (Ten Pillars)
+
 - [ ] ✅ Repeatable: Same artifact to all environments
 - [ ] ✅ Verifiable: Tests run post-deploy in every environment
 - [ ] ✅ Seamless: Canary/linear, never all-at-once
@@ -577,6 +583,7 @@ flowchart LR
 - [ ] ✅ Coordinated: Approval workflows + scheduling + notifications
 
 ### ThothCTL Integration
+
 - [ ] ThothCTL installed and configured for DevSecOps workflow
 - [ ] `thothctl scan` integrated into CI pipeline
 - [ ] `thothctl check --cost-analysis` runs on every PR

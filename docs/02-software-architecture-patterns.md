@@ -9,6 +9,7 @@ This document defines **how to structure application code** inside each cell (La
 The framework adopts **Hexagonal Architecture** (also called Ports & Adapters, or Clean Architecture) as the standard code structure for all serverless and container workloads.
 
 **Why Hexagonal for Serverless/Containers:**
+
 - **Testability** — Business logic tested without AWS services (no Docker, no LocalStack, no mocks of SDKs)
 - **Portability** — Same domain logic runs in Lambda, ECS, or tests unchanged
 - **AI-DLC friendly** — AI generates adapters; humans own domain logic
@@ -406,6 +407,7 @@ export const handler = async (event: APIGatewayProxyEventV2): Promise<APIGateway
 ```
 
 **Key:** The handler is THIN — it only:
+
 1. Parses the incoming event (adapter concern)
 2. Calls the use case (domain logic)
 3. Maps the result back to HTTP response (adapter concern)

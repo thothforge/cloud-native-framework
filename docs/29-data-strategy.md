@@ -490,30 +490,35 @@ thothctl scan iac -t opa --policy-dir https://github.com/myorg/data-policies.git
 ## Data Strategy Checklist
 
 ### Cell Data Ownership
+
 - [ ] Each cell has its own DynamoDB table(s) — no sharing
 - [ ] Cross-cell communication via events only (ECST)
 - [ ] Data contracts defined (AsyncAPI / JSON Schema)
 - [ ] EventBridge Schema Registry enabled
 
 ### Data Quality
+
 - [ ] Data contracts have quality SLAs (completeness, freshness)
 - [ ] Contract validation in CI/CD pipeline
 - [ ] Dead-letter queue for schema-invalid events
 - [ ] Consumer-driven contracts for critical integrations
 
 ### Security & Compliance
+
 - [ ] Data classification applied to all tables (L1-L4 tags)
 - [ ] KMS encryption per classification level
 - [ ] PITR enabled on all DynamoDB tables
 - [ ] RCPs enforce org-only access to data stores
 
 ### Analytics
+
 - [ ] Operational data exported to S3 (not queried directly)
 - [ ] Glue Catalog for schema discovery
 - [ ] Athena for ad-hoc analytics queries
 - [ ] Separation of operational and analytical workloads
 
 ### AI/RAG
+
 - [ ] Knowledge Base configured (S3 → chunking → OpenSearch vectors)
 - [ ] Auto-ingestion on document change
 - [ ] Chunking strategy appropriate for document type

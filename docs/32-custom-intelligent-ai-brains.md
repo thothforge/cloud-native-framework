@@ -142,6 +142,7 @@ Three jobs:
 ### Layer 3: Retrieval — Multi-Strategy for Production
 
 Production-grade retrieval combines:
+
 - **Semantic search** over embedded observations
 - **Entity-based retrieval** for queries naming specific people, products, or systems
 - **Temporal filtering** for "current" vs "historical" queries
@@ -152,6 +153,7 @@ Production-grade retrieval combines:
 ### Layer 4: Action — The Feedback Loop
 
 AI agents read from the brain, act on context, and **write outcomes back**:
+
 - PR review agent queries conventions → posts review → outcome (accepted/rejected) feeds back
 - DevOps Agent queries past incidents → investigates → resolution feeds back
 - FinOps Agent queries cost patterns → recommends optimization → result feeds back
@@ -434,6 +436,7 @@ flowchart LR
 ```
 
 **MCP Stats (July 2026):**
+
 - 97 million monthly SDK downloads
 - 10,000+ active public MCP servers
 - Adopted by OpenAI, Google, Microsoft, AWS
@@ -452,6 +455,7 @@ The Brain exposes its retrieval layer as an MCP server, making it accessible to 
 Peloton rebuilt their entire SDLC around AI, creating an organizational AI brain through two platforms:
 
 **Quarry (Credential Portal + AI Gateway):**
+
 - All engineers authenticate via SSO → receive short-lived STS credentials scoped to Amazon Bedrock
 - Zero static API keys in the entire system
 - Same credential flow works for Claude Code, Windsurf, VS Code, Xcode
@@ -459,6 +463,7 @@ Peloton rebuilt their entire SDLC around AI, creating an organizational AI brain
 - 600+ users + 10 cross-org contributors
 
 **Bureau (Autonomous Agent Platform):**
+
 - Receives natural-language directives → provisions EKS agent pod → executes mission → terminates
 - Access to GitHub, AWS, Slack, Jira, Datadog, Google Workspace (the organizational brain)
 - Every action logged, every session produces structured report
@@ -480,6 +485,7 @@ Peloton rebuilt their entire SDLC around AI, creating an organizational AI brain
 ### Case Study 2: Meta — AI Second Brain for 60K+ Knowledge Workers
 
 Meta's Analytics team built an "AI Second Brain" that:
+
 - Started as a team experiment
 - Scaled to 63,000+ installs across every organizational pillar
 - Captures operational knowledge across the organization
@@ -493,6 +499,7 @@ McKinsey's research (2025-2026) describes the "agentic organization" as the larg
 > "During the night, agents execute structured work at scale. Their tasks include enriching requirements, validating architecture, generating and testing code, and packaging outputs for review. In the morning, humans review."
 
 The pattern requires an organizational AI brain because:
+
 - Agents need context about WHAT to enrich (brain provides domain knowledge)
 - Agents need context about HOW to validate (brain provides architecture standards)
 - Agents need context about WHAT "good" looks like (brain provides conventions)
@@ -503,6 +510,7 @@ The pattern requires an organizational AI brain because:
 ThoughtWorks identified that technology is rarely the blocker — **organizational standardization** is:
 
 **Four Stage Gates (all brain-informed):**
+
 1. **Compliance/Feasibility** — Brain provides: regulatory context, risk policies, data classification
 2. **Secure Sandbox** — Brain provides: threat models, data access controls, environment conventions
 3. **Production Readiness** — Brain provides: security baselines, past pen test findings, bias benchmarks
@@ -552,6 +560,7 @@ thothctl mcp  # Expose 24 DevSecOps tools to agents
 ```
 
 **What you have at end of Stage 1:**
+
 - IDP with golden paths
 - Knowledge Base infrastructure deployed
 - AI-DLC methodology active
@@ -614,6 +623,7 @@ brain_ingestor = Agent(
 ```
 
 **What you have at end of Stage 2:**
+
 - Brain knows your architecture decisions and conventions
 - PR Review agent uses brain context for reviews
 - Consolidation agent extracts decisions from merged PRs
@@ -676,6 +686,7 @@ flowchart TD
 ```
 
 **Self-healing platform patterns:**
+
 - Agent detects drift → queries brain for expected state → auto-remediates
 - Agent detects cost anomaly → queries brain for baselines → auto-right-sizes
 - Agent detects security finding → queries brain for remediation patterns → auto-patches

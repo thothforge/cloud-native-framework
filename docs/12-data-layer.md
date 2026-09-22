@@ -22,6 +22,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 **The default primary database for serverless applications.**
 
 ### Key Features
+
 - **On-demand mode:** Pay per read/write request — no capacity planning
 - **Single-digit millisecond latency** at any scale
 - **Global Tables:** Multi-region active-active replication with Multi-Region Strong Consistency (MRSC)
@@ -30,6 +31,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 - **Default quota:** 40,000 table-level RCU/WCU (can be raised)
 
 ### When to Choose DynamoDB
+
 - Key-value or document access patterns
 - Predictable, fast reads/writes at any scale
 - Event-driven architectures (DynamoDB Streams → Lambda)
@@ -37,6 +39,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 - Global applications (Global Tables)
 
 ### Cost Optimization
+
 - Per-table maximum throughput caps for cost control
 - On-demand is default and recommended for serverless
 - Use Reserved Capacity for sustained high-volume tables
@@ -48,6 +51,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 **When you need SQL/relational semantics in a serverless architecture.**
 
 ### Key Features
+
 - **Auto-scaling:** 0.5 ACU increments based on CPU/memory/connections
 - **Data API:** HTTP-based access — no VPC, no connection pooling needed
 - **Mixed instances:** Combine provisioned + serverless in same cluster
@@ -55,6 +59,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 - **Engines:** PostgreSQL and MySQL
 
 ### Data API Advantages for Lambda
+
 - No VPC configuration needed
 - No connection pool management
 - Only 5 API calls in the entire interface
@@ -62,6 +67,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 - No 1,000 RPS limit (removed in v2)
 
 ### When to Choose Aurora Serverless v2
+
 - Complex queries, JOINs, transactions
 - Relational data models
 - Applications migrating from traditional RDBMS
@@ -75,6 +81,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 **Microsecond caching with zero management.**
 
 ### Key Features
+
 - **Valkey engine:** 33% cheaper than Redis OSS on serverless
 - **Zero-config scaling:** Monitors compute/memory/network, scales instantly
 - **Microsecond read latency**
@@ -83,6 +90,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 - **Starting at ~$6/month** with Valkey
 
 ### When to Choose ElastiCache Serverless
+
 - Caching layer for DynamoDB/Aurora queries
 - Session stores
 - Rate limiting
@@ -96,6 +104,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 **Full-text search and vector search that scales to zero.**
 
 ### Key Features
+
 - **Scales compute to zero** when idle (up to 60% cheaper for variable traffic)
 - **Collection types:** Search, Time Series, Vector Search
 - **Vector engine:** HNSW/IVF with FAISS and Lucene, quantization
@@ -105,6 +114,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 - **Petabyte-scale** search and analytics
 
 ### When to Choose OpenSearch Serverless
+
 - Full-text search features in applications
 - Vector search for AI/RAG
 - Log analytics and observability
@@ -117,6 +127,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 **Ultra-fast object storage for hot data.**
 
 ### Key Features
+
 - **Single-digit millisecond latency** (10x faster than S3 Standard)
 - **2M GET TPS / 200K PUT TPS** per directory bucket
 - **Price reductions (April 2025):** Storage -31%, PUT -55%, GET -85%
@@ -124,6 +135,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 - **99.95% availability SLA**
 
 ### When to Choose S3 Express One Zone
+
 - AI/ML training data
 - Analytics intermediate data
 - Media rendering pipelines
@@ -137,6 +149,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 **Serverless time-series database.**
 
 ### Key Features
+
 - **Trillions of events per day**
 - **Automatic data tiering:** Memory → magnetic (policy-based)
 - **Built-in time-series functions:** Smoothing, interpolation, approximation
@@ -145,6 +158,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 - **~1/10th cost** of relational databases for time-series
 
 ### When to Choose Timestream
+
 - IoT sensor data
 - DevOps monitoring metrics
 - Application performance data
@@ -160,6 +174,7 @@ The serverless data layer in 2026 offers purpose-built databases that scale to z
 > ⚠️ **Note:** MemoryDB does NOT have a serverless deployment option. It requires node-based clusters with manual scaling. Use ElastiCache Serverless for true serverless caching.
 
 ### When to Choose MemoryDB (Over ElastiCache)
+
 - Need durability (data survives failures) — Multi-AZ transactional log
 - Using as a **primary database**, not just a cache
 - Financial transactions, real-time inventory, gaming state

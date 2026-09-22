@@ -36,6 +36,7 @@ graph TD
 Fully managed, serverless access to foundation models via a single API.
 
 ### Available Models (2026)
+
 - **Anthropic:** Claude 3.5 Sonnet, Claude 3 Opus/Haiku
 - **Amazon:** Nova Micro, Nova Lite, Nova Pro
 - **Meta:** Llama 3.x
@@ -43,6 +44,7 @@ Fully managed, serverless access to foundation models via a single API.
 - **DeepSeek, Cohere, AI21 Labs, Stability AI, Luma**
 
 ### Key Features
+
 - **Pay-per-token** — no provisioning
 - **Converse API** (recommended) — unified interface across models
 - **Response streaming** — real-time token delivery
@@ -76,6 +78,7 @@ def handler(event, context):
 Managed AI agents that understand requests, break down tasks, and orchestrate actions.
 
 ### Capabilities
+
 - **Action Groups:** Interact with external systems via APIs (Lambda functions)
 - **Knowledge Bases (RAG):** Connect to S3/Redshift data for grounded responses
 - **Multi-Agent Collaboration (GA March 2025):** Multiple agents coordinate on complex workflows
@@ -95,6 +98,7 @@ flowchart TD
 ```
 
 ### Setting Up Knowledge Bases
+
 1. Upload documents to S3
 2. Configure Knowledge Base (embedding model, vector store, chunking strategy)
 3. Run ingestion job (StartIngestionJob API)
@@ -119,6 +123,7 @@ Enterprise-grade platform to **build, deploy, and operate agents** at scale usin
 
 ### Key Insight: Framework Agnostic
 AgentCore works with **any** agent framework:
+
 - Strands Agents SDK
 - LangGraph
 - CrewAI
@@ -126,6 +131,7 @@ AgentCore works with **any** agent framework:
 - Custom frameworks
 
 And **any** model:
+
 - Bedrock models
 - Models outside Bedrock (OpenAI, self-hosted)
 
@@ -136,6 +142,7 @@ And **any** model:
 The model-driven agent SDK used in production by Kiro, AWS Glue, VPC Reachability Analyzer.
 
 ### Key Facts
+
 - **2,000+ GitHub stars**, 150K+ PyPI downloads
 - **Python** and **TypeScript** (RC since April 2026)
 - **Version 1.0** — production-ready with stability guarantees
@@ -171,6 +178,7 @@ response = agent("What's the weather in Seattle? If it's nice, email john@exampl
 ```
 
 ### 1.0 Features (2026)
+
 - **Multi-agent orchestration** — 4 new coordination primitives
 - **Agent-to-Agent (A2A) protocol** — agents communicate with each other
 - **Session Manager** — remote state persistence
@@ -252,6 +260,7 @@ For **custom-trained** ML models with intermittent traffic.
 | Cost | Pay per token | Pay per inference |
 
 ### Best For
+
 - Custom classification/regression models
 - Proprietary algorithms
 - Structured data prediction

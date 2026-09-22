@@ -5,6 +5,7 @@
 A comprehensive, opinionated framework for building **enterprise-grade cloud-native applications** on AWS. It covers everything from architecture principles and software design patterns to CI/CD pipelines, observability, AI integration, and hands-on workshops.
 
 This is not just documentation — it's a **decision framework** that tells you:
+
 - **What** to build with (services, tools, patterns)
 - **How** to structure code (hexagonal architecture, DDD)
 - **How** to deploy safely (TPF, canary, Express mode)

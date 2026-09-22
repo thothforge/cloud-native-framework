@@ -36,6 +36,7 @@ This bootstraps your local environment with:
 ### AWS Access
 
 Ensure you have:
+
 - AWS SSO configured (`aws sso login --profile <your-profile>`)
 - Access to the team's dev account
 - Permissions to deploy CloudFormation stacks
@@ -201,6 +202,7 @@ This triggers a structured lifecycle:
 #### Phase 1: Inception (Requirements → Design)
 
 The AI will:
+
 - Clarify requirements and ask questions
 - Generate a specification document
 - Define acceptance criteria
@@ -212,6 +214,7 @@ The AI will:
 #### Phase 2: Construction (Design → Code)
 
 The AI will:
+
 - Implement code following the hexagonal architecture
 - Write unit tests alongside implementation
 - Run `cdk-nag` compliance checks
@@ -222,6 +225,7 @@ The AI will:
 #### Phase 3: Operations (Code → Production)
 
 The AI will:
+
 - Add observability (structured logging, metrics, alarms)
 - Generate runbook entries
 - Update documentation
@@ -295,6 +299,7 @@ thothctl scan --category architecture
 ```
 
 Catches issues like:
+
 - Domain importing from AWS SDK (architecture violation)
 - Missing error handling in Lambda handlers
 - Unencrypted resources in CDK stacks
@@ -663,6 +668,7 @@ export class DynamoOrderRepository implements OrderRepository { ... }
 
 **Cause:** Usually timezone, environment variable, or dependency caching issues.  
 **Fix:**
+
 1. Ensure tests don't depend on local time — use UTC
 2. Check that all env vars are set in CI config
 3. Run `npm ci` (not `npm install`) in CI for deterministic installs

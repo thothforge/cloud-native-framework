@@ -5,6 +5,7 @@
 ### 1. Amazon API Gateway
 
 #### HTTP API (Recommended Default)
+
 - **70% cheaper** than REST API
 - Lower latency
 - Built-in CORS, OIDC/OAuth 2.0
@@ -12,6 +13,7 @@
 - Service integrations: EventBridge, Kinesis, SQS, Step Functions
 
 #### REST API (When You Need Management Features)
+
 - API keys and usage plans with per-client throttling
 - Request validation
 - AWS WAF integration
@@ -19,6 +21,7 @@
 - Mock integrations
 
 #### WebSocket API
+
 - Real-time bidirectional communication
 - Route-based message handling ($connect, $disconnect, custom routes)
 - Connection tracking via DynamoDB
@@ -39,6 +42,7 @@
 The **GraphQL-first** API layer for frontend-driven applications.
 
 #### Key Features (2026)
+
 - **JavaScript resolvers** (replaces VTL) — ECMAScript 6.0 subset
 - **Pipeline resolvers** — compose multiple functions in sequence
 - **Merged APIs** — federate up to 10 source APIs from independent teams
@@ -47,6 +51,7 @@ The **GraphQL-first** API layer for frontend-driven applications.
 - **Data sources:** DynamoDB, Lambda, HTTP, EventBridge, OpenSearch, RDS, Bedrock
 
 #### Merged APIs (Multi-Team GraphQL Federation)
+
 - Teams develop source APIs independently
 - Build-time schema composition (not router-based runtime federation)
 - No extra network hops (single merged server)
@@ -54,6 +59,7 @@ The **GraphQL-first** API layer for frontend-driven applications.
 - Supports subscriptions (unlike most federation routers)
 
 #### When to Choose AppSync
+
 - Frontend needs flexible data queries (GraphQL)
 - Real-time updates required (subscriptions)
 - Multi-source data aggregation
@@ -83,12 +89,14 @@ Simplest HTTP endpoint — no API Gateway needed.
 The **event backbone** for serverless architectures.
 
 #### Event Buses (Fan-Out Routing)
+
 - Router receives events and delivers to zero or more targets
 - Rules evaluate events using JSON-based pattern matching
 - Cross-account event delivery
 - Event archiving and replay
 
 #### EventBridge Pipes (Point-to-Point)
+
 - Source → Filter → Enrichment → Target
 - Sources: DynamoDB Streams, Kinesis, Amazon MQ, MSK, SQS
 - Enrichment: Lambda, Step Functions, API Gateway, API Destinations
@@ -96,6 +104,7 @@ The **event backbone** for serverless architectures.
 - Pay only for events matching filters
 
 #### EventBridge Scheduler
+
 - **1 million schedules per account** (vs 300 rules limit)
 - **1000s TPS** throughput
 - Cron, fixed rate, or one-time schedules

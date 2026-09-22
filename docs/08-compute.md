@@ -82,6 +82,7 @@ Supports response streaming via `AWS_LWA_INVOKE_MODE=response_stream`.
 Workflow orchestration for multi-step serverless applications.
 
 ### Standard Workflows
+
 - **Duration:** Up to 1 year
 - **Execution model:** Exactly-once
 - **Rate:** 2,000+ executions/second
@@ -89,6 +90,7 @@ Workflow orchestration for multi-step serverless applications.
 - **Use for:** Long-running, durable, auditable workflows; saga patterns; non-idempotent actions
 
 ### Express Workflows
+
 - **Duration:** Up to 5 minutes
 - **Execution model:** At-least-once
 - **Rate:** 100,000+ executions/second
@@ -96,6 +98,7 @@ Workflow orchestration for multi-step serverless applications.
 - **Use for:** High-volume event processing, IoT, streaming data
 
 ### Distributed Map
+
 - Up to **10,000 parallel** child workflow executions
 - Optimized for S3 data sources (JSON, CSV)
 - Each iteration runs as separate child execution
@@ -120,6 +123,7 @@ Serverless containers for workloads that exceed Lambda's constraints.
 | Pricing | Per-invocation | Per vCPU-sec + memory |
 
 ### Pricing
+
 - Per-second billing (1-minute minimum)
 - Pay for vCPU and memory consumed
 - No upfront costs

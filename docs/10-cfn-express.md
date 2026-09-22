@@ -14,6 +14,7 @@ Express mode is a deployment option that marks stack operations as complete once
 ### Key Insight
 
 CloudFormation always had two phases:
+
 1. **Configuration** — Resource is created/configured via AWS APIs ✓
 2. **Stabilization** — Resource is verified ready to serve traffic (health checks pass, propagation completes, ENIs cleaned up)
 
@@ -32,6 +33,7 @@ flowchart LR
 ```
 
 ### What Remains Unchanged:
+
 - Resources are provisioned in dependency order
 - If Resource B depends on Resource A's ID, A's configuration completes first
 - CloudFormation retries dependent resources that hit transient failures
@@ -39,6 +41,7 @@ flowchart LR
 - Supports nested stacks (propagates to all children)
 
 ### What Changes:
+
 - Stack reports `CREATE_COMPLETE` / `UPDATE_COMPLETE` faster
 - Rollback disabled by default (fastest iteration)
 - Status reason: "Resource operation completed using express mode. It may continue becoming available in the background."
@@ -84,6 +87,7 @@ The IaC tool selection narrative was:
 ### AWS CDK — Big Winner ✅
 
 Express mode makes CDK the **strongest overall choice** for AWS-only teams:
+
 - `cdk deploy --express` — sub-minute deployments
 - Retains all CDK advantages: L2/L3 constructs, type safety, Construct Hub, cdk-nag compliance
 - CDK Pipelines for self-mutating CI/CD
@@ -105,6 +109,7 @@ cdk deploy
 ### AWS SAM — Big Winner ✅
 
 SAM was already the simplest serverless tool. Express mode removes its last weakness:
+
 - `sam deploy --express` or `sam sync --express` — seconds for infrastructure changes
 - `sam sync --watch` was already fast for code — now infrastructure is fast too
 - Best local testing (Docker emulation)
@@ -125,6 +130,7 @@ sam sync --express --watch
 ### SST v3 — Still Relevant but Advantage Narrowed
 
 SST's killer differentiation was speed. Now:
+
 - **Live Lambda** remains unique — real AWS events proxied to local code (<10ms)
 - Speed advantage over CDK/SAM is significantly reduced
 - Still better DX for full-stack apps (Next.js/Astro/Remix integration)
@@ -153,6 +159,7 @@ Express mode was explicitly designed for **AI-assisted infrastructure developmen
 > "AI-assisted infrastructure development that benefits from sub-minute feedback loops"
 
 This means tools like **Kiro** and custom AI agents using the **AWS MCP Server** can now:
+
 1. Generate CloudFormation/CDK/SAM templates
 2. Deploy in seconds (Express mode)
 3. Observe results

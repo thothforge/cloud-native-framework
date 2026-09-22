@@ -118,6 +118,7 @@ flowchart TD
 ### The Problem: N Developers Modifying Shared Infrastructure
 
 When multiple developers work on the same service simultaneously, they hit:
+
 - **State conflicts:** Dev A's DynamoDB schema change breaks Dev B's Lambda code
 - **Resource name collisions:** Two developers deploying to the same stack overwrite each other
 - **Slow feedback loops:** Waiting for shared env to be "free" (staging bottleneck)
@@ -815,6 +816,7 @@ flowchart TD
 ## Checklist
 
 ### Infrastructure Setup
+
 - [ ] Sandbox AWS account in dedicated OU (Sandbox OU)
 - [ ] Permission boundaries deployed for developers and agents
 - [ ] SCP enforcing STACK_LIFE tag on all sandbox stacks
@@ -824,6 +826,7 @@ flowchart TD
 - [ ] EventBridge Scheduler for weekend/off-hours destruction
 
 ### Developer Experience
+
 - [ ] `cdk deploy --express -c developer=$USER` works in < 30 seconds
 - [ ] Per-PR environment pipeline configured (GitHub Actions / CDK Pipelines)
 - [ ] Cleanup command documented: `cdk destroy --express --force`
@@ -831,6 +834,7 @@ flowchart TD
 - [ ] Onboarding guide includes ephemeral environment setup
 
 ### Agent Integration
+
 - [ ] Agent permission boundary deployed (max TTL: 2h, max cost: $10/task)
 - [ ] Agent dispatch system enforces concurrency limits (max 5 concurrent)
 - [ ] Agent environments auto-destroy on task completion or TTL
@@ -838,6 +842,7 @@ flowchart TD
 - [ ] Kill switch available: destroy all agent stacks immediately
 
 ### Governance
+
 - [ ] Tagging policy enforced: STACK_LIFE, Owner, Environment, CostCenter
 - [ ] No production data accessible from sandbox account
 - [ ] CloudTrail active in sandbox account

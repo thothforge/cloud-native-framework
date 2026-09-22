@@ -66,6 +66,7 @@ Conversational AI is stateful. Externalize ALL state:
 - **Lambda + state store** — never assume state persists between invocations
 
 **AWS Implementation:**
+
 - AgentCore Memory for agent state
 - DynamoDB for session state (TTL for expiration)
 - ElastiCache Serverless for hot state (microsecond access)
@@ -81,6 +82,7 @@ AI apps can return 200 OK with garbage answers. Expand observability beyond syst
 - **Cost tracking:** Token consumption per model, per feature
 
 **AWS Implementation:**
+
 - Powertools Logger captures full AI request/response
 - AgentCore Observability (OpenTelemetry) traces every agent decision
 - CloudWatch custom metrics for AI quality scores
@@ -198,6 +200,7 @@ pipeline.addStage(new OrdersCell(this, 'Prod', { env: prodEnv }), {
 ```
 
 #### 2. Ephemeral Environments per Pull Request
+
 - Every PR gets its own isolated AWS environment
 - `cdk deploy --express` makes this feasible (seconds, not minutes)
 - Developers test against real AWS services in isolation
@@ -214,6 +217,7 @@ Track these four key metrics:
 | **Time to Restore** | < 10 minutes (automated rollback) |
 
 #### 4. Supply Chain Security at Build-Time
+
 - **Signed builds:** All artifacts signed with AWS Signer
 - **SBOM generation:** Software Bill of Materials for every release
 - **Dependency scanning:** Automated CVE checking in CI pipeline
@@ -221,6 +225,7 @@ Track these four key metrics:
 - **Immutable artifacts:** Once built, never modified — deploy same artifact to all envs
 
 #### 5. Intelligent Test Parallelization
+
 - Split tests across multiple CodeBuild instances
 - Run only impacted tests per change (dependency graph analysis)
 - Use SAM local testing for fast Lambda unit tests
@@ -498,6 +503,7 @@ Applications move from "human calls API" to "agent orchestrates on behalf of hum
 ### Tendency 2: Infrastructure from Conversation
 
 CloudFormation Express + AI tools enable:
+
 - Developer describes intent → AI generates CDK → deploys in seconds → iterates
 - L3 constructs ensure AI generates correct-by-default infrastructure
 - Human reviews architecture decisions; AI handles implementation
@@ -569,6 +575,7 @@ CloudFormation Express + AI tools enable:
 Use this checklist when starting a new project:
 
 ### Infrastructure
+
 - [ ] Choose IaC tool (CDK + Express for most teams)
 - [ ] Create golden path L3 constructs for your patterns
 - [ ] Set up CDK Pipelines (self-mutating CI/CD)
@@ -576,6 +583,7 @@ Use this checklist when starting a new project:
 - [ ] Enable cdk-nag for security validation
 
 ### Application
+
 - [ ] One Lambda per route/event (no monoliths)
 - [ ] ARM64 + SnapStart on all functions
 - [ ] EventBridge as event backbone
@@ -583,6 +591,7 @@ Use this checklist when starting a new project:
 - [ ] Structured logging with Powertools
 
 ### Security
+
 - [ ] Per-function IAM roles (least privilege)
 - [ ] WAF on all public APIs
 - [ ] Cognito for user auth
@@ -590,6 +599,7 @@ Use this checklist when starting a new project:
 - [ ] Bedrock Guardrails on all AI calls
 
 ### Observability
+
 - [ ] Powertools (Logger + Tracer + Metrics) on every function
 - [ ] Application Signals enabled
 - [ ] CloudWatch Alarms (Errors, Throttles, Duration)
@@ -597,6 +607,7 @@ Use this checklist when starting a new project:
 - [ ] DORA metrics tracking in CI/CD
 
 ### Deployment
+
 - [ ] Canary deployment strategy (never all-at-once)
 - [ ] CloudWatch Evidently for feature flags
 - [ ] Ephemeral environments per PR
@@ -604,6 +615,7 @@ Use this checklist when starting a new project:
 - [ ] Automated rollback on alarm breach
 
 ### AI Integration
+
 - [ ] Bedrock Converse API for model access
 - [ ] Guardrails configured (content + PII + topics)
 - [ ] Prompts versioned in Git

@@ -228,6 +228,7 @@ flowchart TD
 | 10 | Complete Workshop Labs 01–02 | Hands-on validation of core concepts |
 
 **Exit Criteria:**
+
 - [ ] ThothCTL version ≥ 3.0 installed
 - [ ] CDK v2 bootstrapped in dev account
 - [ ] First service deployed and returning 200 OK
@@ -249,6 +250,7 @@ flowchart TD
 | 10–14 | Enable ThothCTL DevSecOps continuous scanning | Shift-left security in pipeline |
 
 **Exit Criteria:**
+
 - [ ] Pipeline deploys on every push to `main`
 - [ ] Canary catches synthetic failures and rolls back
 - [ ] Traces visible in X-Ray for all service interactions
@@ -270,6 +272,7 @@ flowchart TD
 | 5–8 | Deploy DevOps Agent for automated operations | AI-assisted incident response |
 
 **Exit Criteria:**
+
 - [ ] Private constructs published to CodeArtifact
 - [ ] ≥3 accounts with proper OU structure
 - [ ] SCPs preventing resource creation in non-approved regions
@@ -291,6 +294,7 @@ flowchart TD
 | 6+ | FinOps automation (right-sizing, reservation, waste elimination) | Cost optimized continuously |
 
 **Exit Criteria:**
+
 - [ ] AI detects anomalies before alerts fire (predictive)
 - [ ] Self-healing resolves ≥60% of incidents without human intervention
 - [ ] Compliance score ≥ 98% continuously (not just at audit time)

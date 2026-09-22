@@ -23,6 +23,7 @@ This workshop applies **every principle and practice** from this framework to bu
 ### What You'll Build
 
 A serverless **Order Processing API** with:
+
 - API Gateway HTTP API → Lambda (ARM64 + SnapStart)
 - DynamoDB (On-Demand) for orders
 - EventBridge for async event processing
@@ -101,6 +102,7 @@ flowchart LR
 ```
 
 **When to use SDD:**
+
 - You know exactly what you want to build
 - Solo developer or small team
 - Feature-level work within an existing system
@@ -130,6 +132,7 @@ flowchart LR
 ```
 
 **When to use AI-DLC:**
+
 - Exploring a new system or domain
 - Team needs shared understanding (mob sessions)
 - Requirements are ambiguous — AI helps discover them
@@ -311,6 +314,7 @@ flowchart TD
 ```
 
 This hierarchy means:
+
 - **Organization** sets baseline policies, approved tool versions, required tags
 - **Team (Space)** configures VCS, credentials, team-specific policies
 - **Project** overrides specific settings for this application
@@ -363,6 +367,7 @@ Using AI-DLC, build a serverless order processing API with the following require
 ```
 
 **AI-DLC will:**
+
 1. Ask clarifying questions (answer them collaboratively — "Mob Elaboration")
 2. Generate requirements document in `aidlc-docs/`
 3. Create units of work for parallel development

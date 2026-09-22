@@ -576,6 +576,7 @@ In the agentic era, **MCP tool descriptions ARE the API contract** for AI agents
 ## APIOps Checklist
 
 ### Design Phase
+
 - [ ] API contract written BEFORE implementation (OpenAPI/AsyncAPI/GraphQL SDL)
 - [ ] Spectral lint rules configured (`.spectral.yaml`)
 - [ ] Event envelope format standardized
@@ -583,6 +584,7 @@ In the agentic era, **MCP tool descriptions ARE the API contract** for AI agents
 - [ ] Versioning strategy decided (URL path for REST)
 
 ### Pipeline Integration
+
 - [ ] Spectral lint in PR checks
 - [ ] Breaking change detection (oasdiff) blocks PR
 - [ ] Type generation from spec (openapi-typescript / GraphQL Codegen)
@@ -590,6 +592,7 @@ In the agentic era, **MCP tool descriptions ARE the API contract** for AI agents
 - [ ] API Gateway/AppSync deployed from spec (not manually configured)
 
 ### Governance
+
 - [ ] Schema registry enabled (EventBridge Schema Discovery)
 - [ ] Deprecation policy defined (6-month sunset minimum)
 - [ ] API catalog/portal available to all teams
@@ -597,6 +600,7 @@ In the agentic era, **MCP tool descriptions ARE the API contract** for AI agents
 - [ ] MCP tool descriptions reviewed with same rigor as API specs
 
 ### Operations
+
 - [ ] SLOs defined per API (availability, latency, error rate)
 - [ ] Rate limiting configured per consumer
 - [ ] WAF rules applied to all public APIs

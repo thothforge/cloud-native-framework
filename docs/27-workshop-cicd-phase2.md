@@ -94,6 +94,7 @@ flowchart LR
 ```
 
 **Capabilities in the pipeline:**
+
 - Deep security analysis against compliance requirements
 - Known exploit pattern detection
 - Emerging threat vector identification
@@ -157,6 +158,7 @@ flowchart TD
 ```
 
 **What DevOps Agent checks:**
+
 - Code adherence to organizational standards
 - Dependency impacts across repositories
 - IAM permission changes (mathematical verification — not drift from Well-Architected)
@@ -519,18 +521,21 @@ flowchart TD
 ## Enterprise CI/CD Checklist
 
 ### Pre-Merge Gates
+
 - [ ] AWS Continuum code scanning on every PR
 - [ ] DevOps Agent release readiness review
 - [ ] ThothCTL security scan (`--enforcement hard`)
 - [ ] Branch protection (1+ reviewer + passing checks)
 
 ### Pipeline Infrastructure
+
 - [ ] CDK Pipelines (self-mutating, cross-account)
 - [ ] Multi-account: Shared Services + Dev + Staging + Prod
 - [ ] Express mode for Dev, Standard for Staging/Prod
 - [ ] Canary deployment with alarm-based rollback
 
 ### Supply Chain Security
+
 - [ ] SBOM generated per release (CycloneDX format)
 - [ ] Artifacts signed (AWS Signer)
 - [ ] Dependency scanning (npm audit + Trivy)
@@ -538,6 +543,7 @@ flowchart TD
 - [ ] CodeArtifact for private package management
 
 ### Governance
+
 - [ ] SCPs: Deny direct deploy (must go through pipeline)
 - [ ] RCPs: Data perimeter (org-only access to resources)
 - [ ] Permission Boundaries on all workload roles
@@ -545,6 +551,7 @@ flowchart TD
 - [ ] ThothCTL policy gates in pipeline
 
 ### Autonomous Operations
+
 - [ ] DevOps Agent deployed (incident + release management)
 - [ ] FinOps Agent enabled (cost anomaly detection)
 - [ ] Continuum configured (continuous pen testing)
@@ -552,6 +559,7 @@ flowchart TD
 - [ ] AWS Config rules for runtime compliance
 
 ### Metrics & Visibility
+
 - [ ] DORA metrics dashboard
 - [ ] Pipeline execution notifications (Slack)
 - [ ] Cost reports per deployment

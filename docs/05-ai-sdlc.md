@@ -105,6 +105,7 @@ Using AI-DLC, build a serverless order processing API with DynamoDB and EventBri
 ```
 
 AI-DLC automatically:
+
 1. Activates the three-phase workflow
 2. Asks structured clarifying questions
 3. Generates execution plan for your review
@@ -390,6 +391,7 @@ flowchart TD
 | Weak delivery practices | Create technical debt at machine speed |
 
 **Before scaling agents, stress-test:**
+
 1. Are architecture reviews rigorous enough?
 2. Is test coverage strong enough?
 3. Are governance controls explicit?
@@ -409,6 +411,7 @@ flowchart TD
 ### AWS Serverless Pioneer Stack
 
 To reach **Pioneer** tier with AWS:
+
 - **Plan:** Kiro specs + hooks
 - **Design:** CDK L3 constructs (approved patterns)
 - **Implement:** Kiro code generation + Express deploy
@@ -421,6 +424,7 @@ To reach **Pioneer** tier with AWS:
 ## AI-SDLC Readiness Checklist
 
 ### Foundation (Before Scaling Agents)
+
 - [ ] Architecture review process defined and enforced
 - [ ] Test coverage sufficient to catch agent-generated regressions
 - [ ] Governance controls explicit (who approves what)
@@ -428,6 +432,7 @@ To reach **Pioneer** tier with AWS:
 - [ ] Observability baseline (traces, metrics, logs) working
 
 ### Agent Enablement
+
 - [ ] Specifications are the control plane (not verbal instructions)
 - [ ] Kiro configured with project context and coding standards
 - [ ] CDK L3 constructs encode approved architectural patterns
@@ -435,6 +440,7 @@ To reach **Pioneer** tier with AWS:
 - [ ] Express mode enabled for rapid agent iteration
 
 ### Governance
+
 - [ ] Human review gates defined per SDLC stage
 - [ ] Bedrock Guardrails on all AI-generated content
 - [ ] AgentCore Identity (Cedar policies) for agent authorization
@@ -442,6 +448,7 @@ To reach **Pioneer** tier with AWS:
 - [ ] AIBOM tracking for AI-generated artifacts
 
 ### Operations
+
 - [ ] AWS DevOps Agent deployed for incident investigation
 - [ ] AWS FinOps Agent enabled for cost monitoring
 - [ ] AWS Continuum configured for continuous security

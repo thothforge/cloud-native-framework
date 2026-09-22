@@ -149,6 +149,7 @@ flowchart TD
 > "Start with validate change and PR review." — Ajay Chankramath
 
 These two paths force you to build the essential agent infrastructure with low risk:
+
 - **Validate change** → builds: agent identity, dispatch, execution environment, evaluation
 - **PR review** → only writes comments (worst case: inconsistent feedback, not broken production)
 
@@ -255,6 +256,7 @@ thothctl mcp  # Exposes 24 tools via MCP for AI agents
 ## Platform Engineering Checklist: IDP → ADP
 
 ### IDP Foundation (Stage 1)
+
 - [ ] Project scaffolds (cdkv2_typescript_scaffold)
 - [ ] CI/CD pipelines (CDK Pipelines, self-mutating)
 - [ ] Security scanning (ThothCTL + cdk-nag)
@@ -264,6 +266,7 @@ thothctl mcp  # Exposes 24 tools via MCP for AI agents
 - [ ] Cost estimation (ThothCTL check --cost-analysis)
 
 ### Agent-Ready IDP (Stage 2)
+
 - [ ] AI-DLC workflow rules installed (.kiro/steering/)
 - [ ] ThothCTL MCP server available for agents
 - [ ] Kiro skills distributed via scaffolds
@@ -271,6 +274,7 @@ thothctl mcp  # Exposes 24 tools via MCP for AI agents
 - [ ] Agent observability enabled (token tracking, retry monitoring)
 
 ### Agentic Paths (Stage 3)
+
 - [ ] Validate Change path operational (agent fixes CI failures)
 - [ ] PR Review path operational (DevOps Agent reviews)
 - [ ] Agent dispatch mechanism working (route work to right agent)
@@ -278,6 +282,7 @@ thothctl mcp  # Exposes 24 tools via MCP for AI agents
 - [ ] Human approval gates defined per path
 
 ### Full ADP (Stage 4)
+
 - [ ] Multi-agent orchestration (Kiro + ThothCTL + DevOps Agent + Continuum)
 - [ ] Self-healing platform (drift detection → auto-remediation)
 - [ ] Autonomous cost optimization (FinOps Agent → right-sizing)

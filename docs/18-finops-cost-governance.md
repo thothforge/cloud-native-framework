@@ -75,6 +75,7 @@ All compute workloads MUST use ARM64 (Graviton) unless a documented technical bl
 ### 1.4 Right-Sizing
 
 Right-sizing is enforced through:
+
 1. **Lambda Power Tuning** — automated memory/CPU optimization per function
 2. **Fargate task profiling** — CPU/memory utilization analysis weekly
 3. **DynamoDB auto-scaling** — target 70% utilization on provisioned tables

@@ -414,6 +414,7 @@ graph TD
 ```
 
 **Key principles:**
+
 - Serverless workloads use VPC endpoints (no NAT for AWS service calls)
 - VPC Lattice for service-to-service networking
 - No public subnets in workload accounts
@@ -452,6 +453,7 @@ graph LR
 ```
 
 **CDK Pipelines cross-account setup:**
+
 - Pipeline account has `cdk-*-deploy-role` in each target account
 - SCPs allow only pipeline roles to deploy (deny direct human deploy)
 - Express mode for dev stages, standard + canary for production

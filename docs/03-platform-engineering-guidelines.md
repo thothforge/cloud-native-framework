@@ -7,12 +7,14 @@ Platform engineering is the discipline of designing and building **self-service 
 > "Platform engineering improves developer experience, reduces SDLC friction, and eases the cognitive load of complex software architectures." — Gartner
 
 **It is NOT:**
+
 - A rebrand of DevOps or SRE
 - Building tools nobody asked for
 - A team that says "no" to everything
 - A shared services team that becomes a bottleneck
 
 **It IS:**
+
 - Treating infrastructure as a product (with users, roadmap, feedback)
 - Paving golden paths that make the right thing the easy thing
 - Automating the undifferentiated heavy lifting
@@ -347,6 +349,7 @@ thothctl ai-review                   # Multi-agent security analysis
 ## Checklist: Building Your Platform
 
 ### Phase 1: Foundation (Crawl)
+
 - [ ] Platform team identified (at least 1 dedicated engineer)
 - [ ] First scaffold created (CDKv2 TypeScript)
 - [ ] Basic deployment path working (`cdk deploy --express`)
@@ -354,6 +357,7 @@ thothctl ai-review                   # Multi-agent security analysis
 - [ ] ThothCTL installed and available to all developers
 
 ### Phase 2: Self-Service (Walk)
+
 - [ ] CDK Pipelines deployed (self-mutating)
 - [ ] Security scanning in pipeline (ThothCTL)
 - [ ] Observability baseline (OTEL + Powertools)
@@ -361,6 +365,7 @@ thothctl ai-review                   # Multi-agent security analysis
 - [ ] First DX survey conducted
 
 ### Phase 3: Product (Run)
+
 - [ ] Platform Product Manager assigned
 - [ ] Developer NPS tracked quarterly
 - [ ] Private construct library in CodeArtifact
@@ -369,6 +374,7 @@ thothctl ai-review                   # Multi-agent security analysis
 - [ ] AI-DLC methodology adopted by teams
 
 ### Phase 4: Agentic (Fly)
+
 - [ ] ADP architecture implemented (see IDP → ADP doc)
 - [ ] Agent paths operational (validate change, PR review)
 - [ ] Self-healing patterns active

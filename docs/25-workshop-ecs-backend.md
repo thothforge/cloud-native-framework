@@ -21,6 +21,7 @@ This workshop focuses on building **containerized backend services** on ECS Farg
 ### What You'll Build
 
 A production-ready **microservice backend** on ECS Fargate:
+
 - Express.js / FastAPI containerized service
 - ECS Express Mode deployment (single command)
 - Service Connect for service-to-service communication
@@ -256,6 +257,7 @@ aws ecs create-express-gateway-service \
 ```
 
 **What ECS Express Mode auto-provisions:**
+
 - ✅ ECS Cluster (if not existing)
 - ✅ Fargate task definition (CPU, memory from container)
 - ✅ Application Load Balancer with health checks

@@ -26,6 +26,7 @@ amplify/
 ```
 
 ### Key Features
+
 - **TypeScript-first** backend definitions
 - **Per-developer cloud sandboxes:** `npx ampx sandbox` syncs on every save
 - **Built-in auth:** Cognito (email, social, MFA, SAML/OIDC, passwordless)
@@ -79,6 +80,7 @@ export const data = defineData({
 ```
 
 ### When to Choose Amplify Gen 2
+
 - Want fastest path from code to production
 - Need built-in auth + data + storage + AI
 - Building with React/Next.js/Vue/Angular
@@ -140,6 +142,7 @@ sst dev
 ```
 
 ### When to Choose SST v3
+
 - Need Live Lambda development (code runs locally with real AWS events)
 - Building full-stack with Next.js/Astro/Remix
 - Want type-safe resource bindings between frontend and backend
@@ -209,11 +212,13 @@ const distribution = new cloudfront.Distribution(this, 'CDN', {
 ## 5. Amplify Hosting (SSR)
 
 ### Supported Frameworks
+
 - **Next.js** — First-class, zero-config detection
 - **Nuxt.js** — Built-in Amplify adapter
 - Other SSR frameworks via deployment specification adapters
 
 ### Features
+
 - Auto CI/CD from Git repositories
 - Branch-based deployments (preview per PR)
 - Custom domains with ACM TLS

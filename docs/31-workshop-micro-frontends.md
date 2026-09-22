@@ -407,6 +407,7 @@ flowchart LR
 ```
 
 **Amplify is perfect when:**
+
 - ✅ One team, one app, one framework
 - ✅ Need auth + data + storage integrated (code-first, TypeScript)
 - ✅ Want per-branch preview environments automatically
@@ -415,6 +416,7 @@ flowchart LR
 - ✅ Fastest time-to-production for a full-stack app
 
 **Amplify is wrong when:**
+
 - ❌ Multiple teams need independent deploy cadences
 - ❌ Need custom CloudFront behaviors (multi-origin, edge compute)
 - ❌ Different frameworks per section (React + Vue + Angular)
@@ -495,30 +497,35 @@ const rum = initRUM({
 ## Checklist
 
 ### Architecture
+
 - [ ] Composition approach chosen (Module Federation / Import Maps / Edge)
 - [ ] Shared dependencies defined (React, design system, router)
 - [ ] Contract between shell and remotes documented
 - [ ] Caching strategy defined per file type
 
 ### Infrastructure
+
 - [ ] S3 bucket per MFE team (independent deploys)
 - [ ] CloudFront with path-based behaviors per MFE
 - [ ] OAC configured (no public S3 access)
 - [ ] Cache invalidation strategy per team
 
 ### Deployment
+
 - [ ] Independent pipeline per MFE team
 - [ ] No cross-team deploy coordination required
 - [ ] CloudFront invalidation on each deploy (scoped to team's path)
 - [ ] Canary/feature flags per MFE (CloudWatch Evidently)
 
 ### Testing
+
 - [ ] Unit tests per MFE (isolated)
 - [ ] Contract tests (shell ↔ remotes)
 - [ ] E2E tests on composed app (staging)
 - [ ] Visual regression tests
 
 ### Observability
+
 - [ ] CloudWatch RUM per MFE
 - [ ] Error tracking with MFE attribution
 - [ ] Load performance per remote

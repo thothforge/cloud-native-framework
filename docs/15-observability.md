@@ -133,6 +133,7 @@ def handler(event, context):
 ```
 
 **Key capabilities:**
+
 - Automatic context propagation across: API Gateway → Lambda → SQS → Lambda → DynamoDB
 - W3C TraceContext standard (interoperable with any OTEL-compatible service)
 - Custom spans for business logic
@@ -157,6 +158,7 @@ def handler(event, context):
 ```
 
 **Key capabilities:**
+
 - Custom business metrics (orders processed, revenue, conversion rates)
 - Dimensions/attributes for slicing (by customer tier, region, product)
 - Export to CloudWatch Metrics, Prometheus, or any OTLP backend
@@ -375,6 +377,7 @@ Don't just measure technical metrics — measure **business outcomes**:
 ## VI. Observability Checklist
 
 ### Instrumentation
+
 - [ ] ADOT Lambda layer on all functions (auto-instrumentation)
 - [ ] Lambda Powertools (Logger + Tracer + Metrics) on every function
 - [ ] Structured JSON logging with correlation IDs
@@ -382,6 +385,7 @@ Don't just measure technical metrics — measure **business outcomes**:
 - [ ] Trace propagation verified end-to-end (sync + async)
 
 ### Monitoring
+
 - [ ] Application Signals enabled (zero-code APM)
 - [ ] SLOs defined for critical services
 - [ ] CloudWatch Alarms on: Errors, Throttles, Duration, DeadLetterErrors
@@ -389,18 +393,21 @@ Don't just measure technical metrics — measure **business outcomes**:
 - [ ] Anomaly detection on key metrics
 
 ### Intelligence
+
 - [ ] AWS DevOps Agent deployed (autonomous incident investigation)
 - [ ] AWS FinOps Agent enabled (cost anomaly detection)
 - [ ] AWS Continuum configured (continuous security validation)
 - [ ] Custom SRE agents for recurring operational tasks
 
 ### Analysis
+
 - [ ] CloudWatch Logs Insights queries saved for common debugging
 - [ ] X-Ray service map reviewed for dependency bottlenecks
 - [ ] Cost-per-transaction tracking enabled
 - [ ] Weekly error budget review process
 
 ### Infrastructure Drift
+
 - [ ] ThothCTL drift detection configured for production
 - [ ] Drift alerts integrated into monitoring workflow
 

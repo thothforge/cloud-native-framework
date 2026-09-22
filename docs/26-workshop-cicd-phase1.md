@@ -82,6 +82,7 @@ flowchart LR
 ```
 
 **Rules:**
+
 - Feature branches live < 1 day (short-lived)
 - Every merge to `main` triggers the pipeline
 - `main` is always deployable (no broken builds)
@@ -503,6 +504,7 @@ confirm_changeset = true    # Manual confirmation for prod
 ## Summary: Phase 1 CI/CD Checklist
 
 ### Pipeline
+
 - [ ] CDK Pipelines (self-mutating) deployed
 - [ ] Source: GitHub with branch protection on `main`
 - [ ] Build: npm ci + test + cdk-nag + ThothCTL scan
@@ -511,16 +513,19 @@ confirm_changeset = true    # Manual confirmation for prod
 - [ ] Prod: Manual approval + canary deployment
 
 ### TPF Practices
+
 - [ ] **T:** Trunk-based (short-lived branches < 1 day)
 - [ ] **P:** Canary (`Canary10Percent5Minutes`) with alarm-based rollback
 - [ ] **F:** Feature flags via CloudWatch Evidently
 
 ### DevSecOps
+
 - [ ] ThothCTL `scan` in build stage (Checkov + Trivy)
 - [ ] ThothCTL `workflow devsecops --phase secure` as pipeline gate
 - [ ] Cost analysis on every deployment
 
 ### Metrics
+
 - [ ] DORA metrics dashboard created
 - [ ] Deployment frequency tracked
 - [ ] MTTR measured (alarm → rollback complete)
@@ -577,6 +582,7 @@ aws budgets delete-budget --account-id "$ACCOUNT_ID" --budget-name cicd-phase1-g
 ## Next: Phase 2 (Enterprise CI/CD)
 
 Phase 2 elevates to enterprise-grade with:
+
 - AWS Continuum (security at machine speed)
 - AWS DevOps Agent (release management + incident investigation)
 - Multi-account with SCPs + RCPs

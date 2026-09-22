@@ -411,6 +411,7 @@ Before any service goes to production, it must pass the ORR:
 ### ORR Checklist
 
 #### Reliability
+
 - [ ] RTO/RPO defined and documented for this service
 - [ ] Service tier classified (1-4)
 - [ ] DR strategy implemented matching the tier
@@ -420,6 +421,7 @@ Before any service goes to production, it must pass the ORR:
 - [ ] Circuit breaker configured (ECS) or canary with rollback (Lambda)
 
 #### Observability
+
 - [ ] Health endpoint exists and is monitored (Route53 health check)
 - [ ] CloudWatch Alarms configured (errors, latency, throttles)
 - [ ] Application Signals SLO defined
@@ -427,6 +429,7 @@ Before any service goes to production, it must pass the ORR:
 - [ ] Runbook exists for each known failure mode
 
 #### Recovery
+
 - [ ] Rollback procedure documented and tested
 - [ ] Backup/restore tested within the last 30 days
 - [ ] Chaos experiment run in staging within last 30 days
@@ -434,6 +437,7 @@ Before any service goes to production, it must pass the ORR:
 - [ ] Error budget tracked and reviewed weekly
 
 #### Operations
+
 - [ ] On-call rotation defined
 - [ ] Escalation path documented
 - [ ] DevOps Agent configured for this service
@@ -441,6 +445,7 @@ Before any service goes to production, it must pass the ORR:
 - [ ] Capacity planning reviewed (auto-scaling verified under load)
 
 #### Dependencies
+
 - [ ] All upstream/downstream dependencies documented
 - [ ] Timeout and retry configured for all external calls
 - [ ] Circuit breaker on all synchronous dependencies
@@ -468,6 +473,7 @@ Combined = 0.999 × 0.999 × 0.999 = 99.7% (not 99.9%!)
 ```
 
 **To achieve 99.9% with 3 dependencies:**
+
 - Each dependency needs 99.97%, OR
 - Use redundancy (multi-region, retry, circuit breaker) to compensate
 

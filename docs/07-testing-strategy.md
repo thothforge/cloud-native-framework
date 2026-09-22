@@ -120,6 +120,7 @@ graph TD
 Entities encapsulate domain rules. They are pure TypeScript classes/functions with no awareness of AWS, databases, or HTTP.
 
 **What to test**:
+
 - Validation rules (email format, price constraints)
 - State transitions (order status machine)
 - Business calculations (pricing, discounts)
@@ -226,6 +227,7 @@ describe('Order Entity', () => {
 Use cases coordinate entities and call port interfaces (repositories, event publishers). We mock the ports to test orchestration in isolation.
 
 **What to test**:
+
 - Correct orchestration sequence
 - Error handling and rollback logic
 - Event emission after successful operations
@@ -357,6 +359,7 @@ describe('ConfirmOrderUseCase', () => {
 Adapters implement port interfaces using real AWS SDKs. We test them against DynamoDB Local, LocalStack, or Testcontainers to verify real serialization, query patterns, and error handling.
 
 **What to test**:
+
 - Correct DynamoDB table operations (put, get, query, update)
 - GSI query patterns
 - Pagination handling
@@ -549,6 +552,7 @@ describe('DynamoDBOrderRepository (Integration)', () => {
 **Characteristics**: Tests the full Lambda handler with real API Gateway events against a deployed test stack.
 
 Handler tests verify:
+
 - API Gateway event parsing
 - Authentication/authorization middleware
 - Cold start behavior
@@ -848,6 +852,7 @@ services:
 ### EventBridge Schema Registry
 
 Every event published to EventBridge has a registered schema. Contract tests ensure:
+
 1. **Producers** emit events matching the schema.
 2. **Consumers** can parse events from the schema.
 

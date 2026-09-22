@@ -19,6 +19,7 @@ With CloudFormation Express mode (June 2026), the IaC landscape has fundamentall
 ## 1. AWS CDK v2 + Express Mode — The New Default ⭐
 
 **Post-Express Verdict:** CDK is now the strongest choice for AWS-only teams. It combines:
+
 - **Speed:** `cdk deploy --express` (seconds) + `cdk deploy --hotswap` (instant Lambda code)
 - **Type safety:** Full IDE support, autocomplete, refactoring
 - **Abstractions:** L2 (sensible defaults), L3 (multi-resource patterns)
@@ -211,6 +212,7 @@ export default $config({
 - Compliance workflows requiring `terraform plan` approvals
 
 ### Key Notes (2026)
+
 - **CDKTF was sunsetted** in December 2025
 - **OpenTofu** (open-source fork) gaining traction with state encryption
 - **Serverless.tf** (v6.0+) integrates with SAM CLI for local testing
@@ -222,6 +224,7 @@ export default $config({
 **Post-Express Verdict:** Code-first IaC without CloudFormation. Speed parity with Express mode means its deployment speed advantage is gone. Strengths: real languages, multi-cloud, ESC (secrets), powers SST v3.
 
 ### When to Choose Pulumi
+
 - Multi-cloud with real programming languages
 - Teams wanting SST-like flexibility without SST's opinions
 - Need Pulumi ESC for centralized secrets management
@@ -249,12 +252,14 @@ CloudFormation Express was explicitly designed for AI-assisted infrastructure:
 > "AI-assisted infrastructure development that benefits from sub-minute feedback loops"
 
 Tools like **Kiro** and custom AI agents can now:
+
 1. Generate CDK/SAM/CFN templates
 2. Deploy in seconds (Express mode)  
 3. Get immediate feedback
 4. Iterate rapidly
 
 This makes CDK + Express the ideal target for AI-generated infrastructure code because:
+
 - CloudFormation has the largest template corpus for AI training
 - cdk-nag validates security automatically
 - Pre-deployment validation catches errors before provisioning

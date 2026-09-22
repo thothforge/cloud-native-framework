@@ -181,12 +181,14 @@ git push                      # CDK Pipelines auto-deploys to staging
 ## What CloudFormation Express Means for the Ecosystem
 
 ### Winners
+
 - **CDK** — Gains speed without losing anything. Now has best overall package.
 - **SAM** — Simple + fast. Perfect for serverless microservices.
 - **CloudFormation native** — Direct templates now deploy in seconds.
 - **AI agents** — Sub-minute feedback loops enable rapid infrastructure iteration.
 
 ### Repositioned
+
 - **SST v3** — Live Lambda remains unique, but speed is no longer a differentiator.
 - **Terraform** — Multi-cloud is its story now, not speed.
 - **Pulumi** — Code-first without CFN opinions, but CDK offers similar with bigger ecosystem.
