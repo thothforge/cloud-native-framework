@@ -1461,6 +1461,7 @@ In serverless, traditional RASP agents don't work. AWS provides equivalent prote
 | Build (SAST) | Semgrep, cdk-nag | SonarQube |
 | Build (SCA) | Trivy, npm audit | Snyk |
 | Build (IaC) | Checkov, ThothCTL | Prisma Cloud |
+| Deploy (CFN Hooks) | cfn-guard / Lambda Hooks (provider-side, unbypassable) | Third-party CFN Hooks |
 | Staging (DAST) | ZAP, Nuclei | StackHawk, Invicti |
 | Staging (Pen test) | AWS Continuum | Manual vendor |
 | Production (WAF) | AWS WAF + Shield | Cloudflare |
@@ -1494,6 +1495,10 @@ In serverless, traditional RASP agents don't work. AWS provides equivalent prote
 - [ ] **Supply Chain**: SBOM generated and stored per release
 - [ ] **Supply Chain**: Vulnerability scanning in CI (block on HIGH/CRITICAL)
 - [ ] **Supply Chain**: CodeArtifact/private registry for internal packages
+- [ ] **Control Points**: cdk-nag at synth-time (developer/pipeline)
+- [ ] **Control Points**: ThothCTL/Checkov/OPA scan in CI
+- [ ] **Control Points**: CloudFormation Hooks (cfn-guard or Lambda) registered per account as the unbypassable deploy-time gate
+- [ ] **Control Points**: Hooks distributed org-wide via StackSets and set to `FAIL` in production
 - [ ] **Monitoring**: CloudTrail enabled (org-level, data events for sensitive resources)
 - [ ] **Monitoring**: GuardDuty enabled in all accounts and regions
 - [ ] **Monitoring**: Security Hub enabled with automated findings routing

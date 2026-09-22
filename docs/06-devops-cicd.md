@@ -337,7 +337,81 @@ flowchart TD
 
 ---
 
-## IV. ThothCTL — DevSecOps Workflow Automation
+## IIIb. Layered Control Points — Where Policy Is Enforced
+
+cdk-nag and ThothCTL are essential, but they share a limitation: **both run before CloudFormation ever sees the template.** cdk-nag evaluates the construct tree at `cdk synth`; ThothCTL scans (Checkov/Trivy/OPA) in CI. Neither one runs if a change reaches an account another way — a console change, a rogue `aws cloudformation deploy` from a laptop, a template authored outside the golden path, or a StackSet from another team. That leaves a gap: **the deploy itself is not a control point.**
+
+A mature delivery model enforces policy at **three independent layers**, each catching what the previous one cannot:
+
+```mermaid
+flowchart LR
+    subgraph L1["1 · SYNTH-TIME (client side)"]
+        NAG["cdk-nag<br/>construct-tree rules"]
+    end
+    subgraph L2["2 · CI SCAN (pipeline side)"]
+        THOTH["ThothCTL / Checkov / Trivy / OPA<br/>template + dependency scan"]
+    end
+    subgraph L3["3 · DEPLOY-TIME (provider side)"]
+        HOOK["CloudFormation Hooks<br/>invoked by CFN on every stack op"]
+    end
+    NAG -->|"can be skipped<br/>if synth is bypassed"| L2
+    THOTH -->|"can be skipped<br/>if pipeline is bypassed"| L3
+    HOOK -->|"cannot be bypassed —<br/>runs inside CloudFormation"| DEPLOY["Resources provisioned"]
+```
+
+| Layer | Control | Runs at | Bypassable? | Catches |
+|-------|---------|---------|-------------|---------|
+| 1 · Synth-time | **cdk-nag** | `cdk synth` on the developer/pipeline machine | Yes — if someone deploys a template not produced by your CDK app | Insecure construct configuration before it's even a template |
+| 2 · CI scan | **ThothCTL / Checkov / OPA** | CI pipeline stage | Yes — if the change reaches the account outside the pipeline | Policy, IaC, dependency and cost issues on the reviewed change |
+| 3 · Deploy-time | **CloudFormation Hooks** | Inside CloudFormation, on every `CreateStack` / `UpdateStack` / `ChangeSet` (and CreateChangeSet) — for **any** principal | **No** — CFN invokes the hook regardless of origin | Non-compliant resources at the moment of provisioning; the enforcement backstop |
+
+### CloudFormation Hooks — the deploy-time backstop
+
+A [CloudFormation Hook](https://docs.aws.amazon.com/cloudformation-cli/latest/hooks-userguide/hooks-structure.html) is a policy evaluation that CloudFormation runs **itself**, before it provisions or updates resources. Because it lives in the CloudFormation registry (per account/region) and not in the developer's toolchain, it applies uniformly to CDK, SAM, native CFN, StackSets, and console-initiated stack operations. It is the one control point that a developer or agent **cannot skip by leaving the golden path.**
+
+Two implementation styles:
+
+- **Guard Hooks (no code):** point a hook at a [cfn-guard](https://docs.aws.amazon.com/cloudformation-cli/latest/hooks-userguide/hooks-guard.html) ruleset in S3. Best for declarative resource-configuration policy (encryption, public-access, tagging, allowed instance/runtime).
+- **Lambda Hooks (custom logic):** a Lambda evaluates the target and returns `SUCCESS` / `FAILURE`. Best for cross-resource or organization-specific logic.
+
+Hooks run in two modes — `WARN` (log the finding, allow the deploy) for rollout, then `FAIL` (block the stack operation) for enforcement.
+
+```yaml
+# Guard Hook — enforce the same intent as cdk-nag, but at deploy time,
+# for every principal in the account (not just golden-path deploys).
+Resources:
+  SecurityGuardHook:
+    Type: AWS::CloudFormation::GuardHook
+    Properties:
+      Alias: Org::Security::BaselineGuardHook
+      ExecutionRole: !GetAtt HookExecutionRole.Arn
+      FailureMode: FAIL          # WARN first during rollout, then FAIL to enforce
+      HookStatus: ENABLED
+      TargetOperations: [STACK, CHANGE_SET, RESOURCE]
+      RuleLocation:
+        Uri: s3://org-cfn-hooks/guard-rules/security-baseline.guard
+      StackFilters:
+        FilteringCriteria: ALL   # applies to all stacks unless excluded
+```
+
+```guard
+# security-baseline.guard — deploy-time equivalents of key cdk-nag rules
+AWS::S3::Bucket {
+  Properties.BucketEncryption exists
+  Properties.PublicAccessBlockConfiguration.BlockPublicAcls == true
+}
+AWS::Lambda::Function {
+  Properties.Runtime in ["nodejs22.x", "python3.13", "python3.12"]  # no EOL runtimes
+}
+AWS::IAM::Role Properties.Policies[*].PolicyDocument.Statement[*] {
+  Action != "*"        # no wildcard actions
+  Resource != "*"      # no wildcard resources
+}
+```
+
+**Governance:** register organization Hooks centrally (Security/Audit account) and deploy them to every account via StackSets — mirroring how SCPs/RCPs are managed in the [Multi-Account Landing Zone](17-multi-account-landing-zone.md). This makes Hooks the technical enforcement of the same policies cdk-nag checks locally: defense-in-depth across synth → CI → deploy, so a control failure at one layer does not become a compliance failure in the account.
+
+---
 
 ThothCTL ([thothctl.readthedocs.io](https://thothctl.readthedocs.io)) orchestrates the full DevSecOps lifecycle in a single CLI, implementing the Ten Pillars and TPF practices.
 
@@ -561,6 +635,14 @@ flowchart LR
 - [ ] SBOM generated per release
 - [ ] Branch protection enforced (PR reviews + tests)
 - [ ] Secrets in Secrets Manager (never in code or env vars)
+
+### Control Points (Defense-in-Depth)
+
+- [ ] Synth-time: cdk-nag runs on `cdk synth` and fails the build on errors
+- [ ] CI scan: `thothctl scan` (Checkov / Trivy / OPA) runs in the pipeline
+- [ ] Deploy-time: organization **CloudFormation Hooks** registered in every account
+- [ ] Hooks rolled out in `WARN` mode, then switched to `FAIL` to enforce
+- [ ] Hooks distributed via StackSets from the Security/Audit account (like SCPs/RCPs)
 
 ### Measurement
 

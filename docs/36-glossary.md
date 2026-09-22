@@ -138,7 +138,21 @@ percentage of traffic to a new version before full release. Learn more:
 [DevOps & CI/CD (TPF)](06-devops-cicd.md).
 
 **cdk-nag** — A tool that checks CDK applications against security and compliance
-rule packs at synth time. Learn more: [Security Baseline](16-security-baseline.md).
+rule packs at synth time. It is a **synth-time** (client-side) control; pair it
+with CloudFormation Hooks for deploy-time enforcement. Learn more:
+[Security Baseline](16-security-baseline.md).
+
+**CloudFormation Hooks** — Policy evaluations that CloudFormation invokes itself
+on every stack create/update/change-set operation, for any principal — the
+**deploy-time (provider-side)** control point that cannot be bypassed by leaving
+the pipeline. Implemented as Guard Hooks (cfn-guard rulesets) or Lambda Hooks
+(custom logic), typically run in `WARN` then `FAIL` mode. Complements cdk-nag
+(synth-time) and ThothCTL (CI). Learn more: [DevOps & CI/CD (TPF)](06-devops-cicd.md).
+
+**cfn-guard** — AWS's open-source policy-as-code engine that validates
+CloudFormation templates and resource configurations against declarative rules;
+the evaluation engine behind CloudFormation Guard Hooks. Learn more:
+[DevOps & CI/CD (TPF)](06-devops-cicd.md).
 
 **Cedar** — AWS's open-source policy language for fine-grained authorization.
 Learn more: [Team Topologies, Roles & Permissions](33-team-topologies-roles.md).
