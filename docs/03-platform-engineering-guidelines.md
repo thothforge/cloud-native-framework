@@ -389,3 +389,12 @@ thothctl ai-review                   # Multi-agent security analysis
 | ThothCTL DevSecOps Quick Start | https://thothctl.readthedocs.io/en/latest/framework/use_cases/devsecops_quickstart/ |
 | CDKv2 TypeScript Scaffold | https://github.com/thothforge/cdkv2_typescript_scaffold |
 | Internal Developer Platform (definition) | https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/ |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Software Architecture Patterns](02-software-architecture-patterns.md) | [Platform Engineering: IDP → ADP](04-platform-engineering-idp-to-adp.md) → |

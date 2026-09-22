@@ -194,3 +194,12 @@ flowchart TD
 | Pub/sub fan-out | SNS → SQS |
 | Reliable queue processing | SQS → Lambda |
 | Service mesh (east-west) | VPC Lattice |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [CloudFormation Express](10-cfn-express.md) | [Data Layer](12-data-layer.md) → |

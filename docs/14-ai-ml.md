@@ -324,3 +324,12 @@ flowchart TD
 6. **RAG for grounded responses** — Knowledge Bases + OpenSearch Serverless for vector search
 7. **Cedar policies govern agent actions** — fine-grained authorization for production agents
 8. **Observe agent behavior** — OpenTelemetry traces show every tool call, every decision
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Frontend & Full-Stack](13-frontend-fullstack.md) | [Observability (OTEL + Powertools)](15-observability.md) → |

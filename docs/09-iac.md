@@ -259,3 +259,12 @@ This makes CDK + Express the ideal target for AI-generated infrastructure code b
 - cdk-nag validates security automatically
 - Pre-deployment validation catches errors before provisioning
 - Express mode provides rapid iteration cycles
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Compute Layer](08-compute.md) | [CloudFormation Express](10-cfn-express.md) → |

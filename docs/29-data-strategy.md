@@ -518,3 +518,12 @@ thothctl scan iac -t opa --policy-dir https://github.com/myorg/data-policies.git
 - [ ] Auto-ingestion on document change
 - [ ] Chunking strategy appropriate for document type
 - [ ] Vector index optimized (HNSW/IVF based on volume)
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [APIOps Model](28-apiops.md) | [Compute Layer](08-compute.md) → |

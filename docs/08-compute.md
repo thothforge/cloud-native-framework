@@ -157,3 +157,12 @@ flowchart TD
 3. **Express Workflows** for high-volume, short (<5 min) idempotent processing
 4. **Right-size Lambda memory** — Use AWS Lambda Power Tuning to find optimal config
 5. **Response streaming** — Avoid oversized memory for large payloads
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Data Strategy](29-data-strategy.md) | [Infrastructure as Code](09-iac.md) → |

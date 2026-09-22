@@ -198,3 +198,12 @@ flowchart TD
     Q --> Hot["Hot objects / ML data → S3 Express One Zone"]
     Q --> Durable["Durable in-memory primary DB → MemoryDB"]
 ```
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [API & Event Patterns](11-api-events.md) | [Frontend & Full-Stack](13-frontend-fullstack.md) → |

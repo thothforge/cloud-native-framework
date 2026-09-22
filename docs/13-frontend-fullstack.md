@@ -248,3 +248,12 @@ flowchart LR
     Edge --> CFE["CloudFront Functions + Lambda@Edge"]
     IaC --> CDK["CDK with cdk deploy --express"]
 ```
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Data Layer](12-data-layer.md) | [AI/ML Integration](14-ai-ml.md) → |

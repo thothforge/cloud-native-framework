@@ -908,3 +908,12 @@ aws cloudformation list-stacks --stack-status-filter CREATE_COMPLETE UPDATE_COMP
 | CDK Version Control Best Practices | https://docs.aws.amazon.com/prescriptive-guidance/latest/best-practices-cdk-typescript-iac/version-control-best-practices.html |
 | CDKv2 TypeScript Scaffold | https://github.com/thothforge/cdkv2_typescript_scaffold |
 | ThothCTL Policy as Code | https://thothctl.readthedocs.io/en/latest/framework/policy_as_code/ |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Workshop: Serverless End-to-End](23-workshop-serverless.md) | [Workshop: ECS Backend](25-workshop-ecs-backend.md) → |

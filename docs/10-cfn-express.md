@@ -203,3 +203,12 @@ CloudFormation Express mode is the most significant IaC deployment improvement s
 5. **Requires no template changes** — works with all existing templates
 
 The new paradigm: **CDK + Express mode** for AWS-native teams wanting the best combination of developer experience, deployment speed, type safety, compliance (cdk-nag), and ecosystem (Construct Hub).
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Infrastructure as Code](09-iac.md) | [API & Event Patterns](11-api-events.md) → |

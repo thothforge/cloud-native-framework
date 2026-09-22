@@ -403,3 +403,12 @@ Don't just measure technical metrics — measure **business outcomes**:
 ### Infrastructure Drift
 - [ ] ThothCTL drift detection configured for production
 - [ ] Drift alerts integrated into monitoring workflow
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [AI/ML Integration](14-ai-ml.md) | [Security Baseline](16-security-baseline.md) → |

@@ -805,3 +805,12 @@ aws cloudwatchevidently delete-project --project order-processing 2>/dev/null ||
 | ThothCTL DevSecOps Quick Start | https://thothctl.readthedocs.io/en/latest/framework/use_cases/devsecops_quickstart/ |
 | ThothCTL Framework Architecture | https://thothctl.readthedocs.io/en/latest/framework/framework_architecture/ |
 | Kiro Documentation | https://kiro.dev/docs/ |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Workshop 0: Foundations](35-workshop-foundations.md) | [Workshop: Enterprise CDK](24-workshop-enterprise-cdk.md) → |

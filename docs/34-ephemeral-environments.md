@@ -864,3 +864,12 @@ flowchart TD
 | [Three Claude Code Cost Catastrophes (May 2026)](https://gist.github.com/yurukusa/f87c20636bbb12dfe03d5f0598768937) | Community Analysis | May 2026 |
 | [Decay Always Wins: Cloud Waste and AI Agents](https://www.quali.com/blog/decay-always-wins-cloud-waste-ai-agents/) | Quali | Jul 2026 |
 | [The Lethal Trifecta](https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/) | Simon Willison | Jun 2025 |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Disaster Recovery & Continuity](30-disaster-recovery-continuity.md) | [Reference Architecture](19-reference-architecture.md) → |

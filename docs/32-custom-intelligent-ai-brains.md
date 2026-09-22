@@ -857,3 +857,12 @@ The window to build agent infrastructure is NOW — Gartner predicts by 2027, 65
 | [PlatformCon 2026: Architecting ADPs](https://platformcon.com/sessions/architecting-agentic-development-platforms) | PlatformCon | 2026 |
 | [Agentic AI Pilot-to-Production Timeline](https://chatgptguide.ai/agentic-ai-pilot-to-production-timeline/) | Industry Report | 2026 |
 | [MCP Ecosystem 2026](https://www.requesty.ai/blog/mcp-ecosystem-2026-building-agent-tool-infrastructure-that-scales) | Requesty | 2026 |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Developer Onboarding](22-developer-onboarding.md) | [Team Topologies, Roles & Permissions](33-team-topologies-roles.md) → |

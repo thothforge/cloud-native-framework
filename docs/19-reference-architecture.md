@@ -215,3 +215,12 @@ cdk destroy --express
 8. **cdk-nag** — automated security validation at build time
 9. **Encryption everywhere** — at-rest (KMS) and in-transit (TLS)
 10. **DLQs on all async processing** — no lost messages
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Ephemeral Environments & Concurrency](34-ephemeral-environments.md) | [Recommendations](20-recommendations.md) → |

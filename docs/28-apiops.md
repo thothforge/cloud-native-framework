@@ -601,3 +601,12 @@ In the agentic era, **MCP tool descriptions ARE the API contract** for AI agents
 - [ ] Rate limiting configured per consumer
 - [ ] WAF rules applied to all public APIs
 - [ ] API usage metrics tracked per consumer/team
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Testing Strategy](07-testing-strategy.md) | [Data Strategy](29-data-strategy.md) → |

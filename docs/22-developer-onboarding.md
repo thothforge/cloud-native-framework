@@ -1,4 +1,4 @@
-# 24 — Developer Onboarding Guide
+# Developer Onboarding Guide
 
 > **Goal:** A new developer joins your team and is productive within 1 day.  
 > This is your "Day 1" document. Follow it top-to-bottom.
@@ -732,3 +732,12 @@ Copy this and check off items as you go:
 ```
 
 **You're ready.** Welcome to the team. 🚀
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Adoption Roadmap](21-adoption-roadmap.md) | [Custom Intelligent AI Brains](32-custom-intelligent-ai-brains.md) → |

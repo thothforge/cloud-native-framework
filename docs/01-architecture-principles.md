@@ -609,3 +609,12 @@ Use this checklist when starting a new project:
 - [ ] Prompts versioned in Git
 - [ ] Agent tools exposed as MCP via AgentCore Gateway
 - [ ] Agent observability via AgentCore + CloudWatch
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| &nbsp; | [Software Architecture Patterns](02-software-architecture-patterns.md) → |

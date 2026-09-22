@@ -1,4 +1,4 @@
-# 23 — Adoption Roadmap & Framework Comparison
+# Adoption Roadmap & Framework Comparison
 
 > **Document Version:** 2.0 — July 2026  
 > **Audience:** Engineering Leadership, Platform Teams, DevOps Engineers, Solution Architects  
@@ -635,3 +635,12 @@ thothctl scan --security --report baseline-scan.json
 ---
 
 *Document maintained by the Platform Engineering team. Last updated: July 2026.*
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Recommendations](20-recommendations.md) | [Developer Onboarding](22-developer-onboarding.md) → |

@@ -1,4 +1,4 @@
-# 25. FinOps & Cost Governance
+# FinOps & Cost Governance
 
 > **Status**: Active · **Owner**: Platform Engineering  
 > **Last Updated**: 2026-07-29
@@ -822,3 +822,12 @@ graph LR
 
 *Document maintained by Platform Engineering. Review cycle: Monthly.*  
 *Next review: 2026-08-29*
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Multi-Account Landing Zone](17-multi-account-landing-zone.md) | [Disaster Recovery & Continuity](30-disaster-recovery-continuity.md) → |

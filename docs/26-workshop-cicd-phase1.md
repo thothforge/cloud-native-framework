@@ -582,3 +582,12 @@ Phase 2 elevates to enterprise-grade with:
 - Multi-account with SCPs + RCPs
 - Supply chain security (SBOM, artifact signing)
 - Policy-as-code gates
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Workshop: ECS Backend](25-workshop-ecs-backend.md) | [Workshop: CI/CD Phase 2](27-workshop-cicd-phase2.md) → |

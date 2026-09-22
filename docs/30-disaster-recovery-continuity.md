@@ -502,3 +502,12 @@ flowchart TD
     Prevention --> Detection --> Response --> Improve
     Improve -->|"Feed back"| Prevention
 ```
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [FinOps & Cost Governance](18-finops-cost-governance.md) | [Ephemeral Environments & Concurrency](34-ephemeral-environments.md) → |

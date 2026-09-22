@@ -637,3 +637,12 @@ flowchart LR
 | [Why You Shouldn't Treat AI Agents Like Employees](https://hbr.org/2026/05/research-why-you-shouldnt-treat-ai-agents-like-employees) | Harvard Business Review | May 2026 |
 | [NIST IR 8596: AI Accountability](https://nvlpubs.nist.gov/nistpubs/ir/2025/NIST.IR.8596.iprd.pdf) | NIST | 2025 |
 | [WEF: Organizational Transformation in the Age of AI](https://reports.weforum.org/docs/WEF_Organizational_Transformation_in_the_Age_of_AI_How_Organizations_Maximize_AI's_Potential_2026.pdf) | World Economic Forum | 2026 |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Custom Intelligent AI Brains](32-custom-intelligent-ai-brains.md) | [Workshop 0: Foundations](35-workshop-foundations.md) → |

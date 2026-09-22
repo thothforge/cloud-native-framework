@@ -299,3 +299,12 @@ thothctl mcp  # Exposes 24 tools via MCP for AI agents
 | Gartner: Maturity Model for AI-Native SE | https://www.gartner.com/en/documents/7586633 |
 | Gartner: 2026 Hype Cycle for Agentic AI | https://www.gartner.com/en/articles/hype-cycle-for-agentic-ai |
 | ThothCTL Framework Architecture | https://thothctl.readthedocs.io/en/latest/framework/framework_architecture/ |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Platform Engineering Guidelines](03-platform-engineering-guidelines.md) | [AI-SDLC (Agentic Lifecycle)](05-ai-sdlc.md) → |

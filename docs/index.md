@@ -82,33 +82,9 @@ kiro-cli chat
 
 ## Documentation Index
 
-### Foundations
-
-| Document | Description |
-|----------|-------------|
-| [Compute Layer](08-compute.md) | Lambda (SnapStart, ARM64, streaming), Step Functions, ECS Fargate |
-| [Infrastructure as Code](09-iac.md) | CDK + Express Mode, SAM, SST v3, Terraform — post-Express comparison |
-| [API & Event Patterns](11-api-events.md) | API Gateway, AppSync, EventBridge (Bus, Pipes, Scheduler), VPC Lattice |
-| [Data Layer](12-data-layer.md) | DynamoDB, Aurora Serverless v2, ElastiCache, OpenSearch, S3 Express |
-| [Frontend & Full-Stack](13-frontend-fullstack.md) | Amplify Gen 2, SST v3, CloudFront Functions, Lambda@Edge |
-
-### Operations & Delivery
-
-| Document | Description |
-|----------|-------------|
-| [Observability](15-observability.md) | OpenTelemetry (ADOT), Lambda Powertools, Application Signals, Frontier Agents |
-| [AI/ML Integration](14-ai-ml.md) | Bedrock, AgentCore, Strands SDK, Guardrails, RAG patterns |
-| [CloudFormation Express](10-cfn-express.md) | How Express mode changes the IaC landscape |
-| [Ephemeral Environments & Concurrency](34-ephemeral-environments.md) | Per-developer sandboxes, per-PR environments, agent isolation, TTL auto-cleanup, cost guardrails — implementation patterns for developer and agent concurrency |
-| [Reference Architecture](19-reference-architecture.md) | E-commerce, SaaS, IoT — complete stack diagrams |
-| [Recommendations](20-recommendations.md) | Final recommendations by team type and application |
-
-### Investigation & Intelligence
-
-| Document | Description |
-|----------|-------------|
-| [Custom Intelligent AI Brains](32-custom-intelligent-ai-brains.md) | How organizations build shared, learning memory layers (AI Brains) to support the entire product lifecycle — architecture, implementation on AWS, case studies (Peloton, Meta, McKinsey), and adoption roadmap |
-| [Team Topologies, Roles & Permissions](33-team-topologies-roles.md) | Modern team structures, new AI-era roles (Intent Engineer, AgentOps, Context Engineer), 3-tier decision authority, RACI matrix, AWS permissions model (IAM + Cedar), and staged adoption path |
+> This index follows the same six-group learning path as the site navigation
+> (defined in `zensical.toml`). Read top-to-bottom for a guided path, or jump to
+> the group you need.
 
 ### Principles & Patterns
 
@@ -124,6 +100,45 @@ kiro-cli chat
 | [APIOps Model](28-apiops.md) | Contract-first, API lifecycle, OpenAPI/AsyncAPI/GraphQL, governance |
 | [Data Strategy](29-data-strategy.md) | Cell data ownership, ECST, data mesh, data contracts, DynamoDB patterns |
 
+### Infrastructure
+
+| Document | Description |
+|----------|-------------|
+| [Compute Layer](08-compute.md) | Lambda (SnapStart, ARM64, streaming), Step Functions, ECS Fargate |
+| [Infrastructure as Code](09-iac.md) | CDK + Express Mode, SAM, SST v3, Terraform — post-Express comparison |
+| [CloudFormation Express](10-cfn-express.md) | How Express mode changes the IaC landscape |
+| [API & Event Patterns](11-api-events.md) | API Gateway, AppSync, EventBridge (Bus, Pipes, Scheduler), VPC Lattice |
+| [Data Layer](12-data-layer.md) | DynamoDB, Aurora Serverless v2, ElastiCache, OpenSearch, S3 Express |
+| [Frontend & Full-Stack](13-frontend-fullstack.md) | Amplify Gen 2, SST v3, CloudFront Functions, Lambda@Edge |
+| [AI/ML Integration](14-ai-ml.md) | Bedrock, AgentCore, Strands SDK, Guardrails, RAG patterns |
+
+### Operations & Governance
+
+| Document | Description |
+|----------|-------------|
+| [Observability](15-observability.md) | OpenTelemetry (ADOT), Lambda Powertools, Application Signals, Frontier Agents |
+| [Security Baseline](16-security-baseline.md) | Defense-in-depth, IAM, zero-trust, data classification, AI security, secrets |
+| [Multi-Account Landing Zone](17-multi-account-landing-zone.md) | Control Tower, SCPs, RCPs, permission boundaries, networking, centralized logging |
+| [FinOps & Cost Governance](18-finops-cost-governance.md) | Tagging, service-level optimization, FinOps Agent, cost gates |
+| [Disaster Recovery & Continuity](30-disaster-recovery-continuity.md) | RTO/RPO tiers, serverless DR patterns, failover runbooks |
+| [Ephemeral Environments & Concurrency](34-ephemeral-environments.md) | Per-developer sandboxes, per-PR environments, agent isolation, TTL auto-cleanup, cost guardrails |
+| [Reference Architecture](19-reference-architecture.md) | E-commerce, SaaS, IoT — complete stack diagrams |
+| [Recommendations](20-recommendations.md) | Final recommendations by team type and application |
+
+### Adoption & Onboarding
+
+| Document | Description |
+|----------|-------------|
+| [Adoption Roadmap](21-adoption-roadmap.md) | Why this framework, framework comparison, staged roadmap, checklists |
+| [Developer Onboarding](22-developer-onboarding.md) | Prerequisites, first-30-minutes, architecture, dev workflow |
+
+### Intelligence & AI Brains
+
+| Document | Description |
+|----------|-------------|
+| [Custom Intelligent AI Brains](32-custom-intelligent-ai-brains.md) | How organizations build shared, learning memory layers (AI Brains) to support the entire product lifecycle — architecture, implementation on AWS, case studies (Peloton, Meta, McKinsey), and adoption roadmap |
+| [Team Topologies, Roles & Permissions](33-team-topologies-roles.md) | Modern team structures, new AI-era roles (Intent Engineer, AgentOps, Context Engineer), 3-tier decision authority, RACI matrix, AWS permissions model (IAM + Cedar), and staged adoption path |
+
 ### Workshops
 
 | Document | Description |
@@ -134,6 +149,13 @@ kiro-cli chat
 | [Workshop: ECS Backend](25-workshop-ecs-backend.md) | Containers, ECS Express Mode, Docker Compose → cloud, Service Connect |
 | [Workshop: CI/CD Phase 1](26-workshop-cicd-phase1.md) | CDK Pipelines, canary, feature flags, ThothCTL DevSecOps |
 | [Workshop: CI/CD Phase 2](27-workshop-cicd-phase2.md) | Continuum, DevOps Agent, FinOps Agent, supply chain, SCPs + RCPs |
+| [Workshop: Micro-Frontends](31-workshop-micro-frontends.md) | Micro-frontends on CloudFront + S3 vs Amplify, composition, caching |
+
+### Reference
+
+| Document | Description |
+|----------|-------------|
+| [Glossary](36-glossary.md) | Definitions of key terms used across the framework, grouped by area, each linking to its dedicated chapter |
 
 ---
 

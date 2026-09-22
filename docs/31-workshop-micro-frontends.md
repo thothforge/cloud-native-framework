@@ -561,3 +561,12 @@ aws s3 ls | grep -E 'app-shell|mfe-' || echo "No MFE buckets remain"
 **✅ Checkpoint:** CloudFront distribution deleted, all MFE S3 buckets removed, RUM monitors deleted, no Lambda@Edge replicas remaining.
 
 > For organization-wide cost governance, see [FinOps & Cost Governance](18-finops-cost-governance.md).
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Workshop: CI/CD Phase 2](27-workshop-cicd-phase2.md) | [Glossary](36-glossary.md) → |

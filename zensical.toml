@@ -61,6 +61,8 @@ nav = [
   { "Workshop: CI/CD Phase 1" = "26-workshop-cicd-phase1.md" },
   { "Workshop: CI/CD Phase 2" = "27-workshop-cicd-phase2.md" },
   { "Workshop: Micro-Frontends" = "31-workshop-micro-frontends.md" },
+  # --- REFERENCE ---
+  { "Glossary" = "36-glossary.md" },
 ]
 
 # Theme configuration

@@ -1,4 +1,4 @@
-# 20 — Testing Strategy for Modern Cloud-Native Serverless Framework
+# Testing Strategy for Modern Cloud-Native Serverless Framework
 
 > **Status**: Living Document  
 > **Last Updated**: 2026-07-29  
@@ -2035,3 +2035,12 @@ tests/
   }
 }
 ```
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [DevOps & CI/CD (TPF)](06-devops-cicd.md) | [APIOps Model](28-apiops.md) → |

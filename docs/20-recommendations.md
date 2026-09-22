@@ -199,3 +199,12 @@ git push                      # CDK Pipelines auto-deploys to staging
 >
 > Choose SST v3 for Live Lambda DX. Choose Terraform for multi-cloud. 
 > Choose CDK for everything else.
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Reference Architecture](19-reference-architecture.md) | [Adoption Roadmap](21-adoption-roadmap.md) → |

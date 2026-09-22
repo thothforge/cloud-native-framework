@@ -580,3 +580,12 @@ flowchart LR
 - [ ] ThothCTL installed and configured for DevSecOps workflow
 - [ ] `thothctl scan` integrated into CI pipeline
 - [ ] `thothctl check --cost-analysis` runs on every PR
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [AI-SDLC (Agentic Lifecycle)](05-ai-sdlc.md) | [Testing Strategy](07-testing-strategy.md) → |

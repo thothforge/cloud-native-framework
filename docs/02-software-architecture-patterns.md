@@ -879,3 +879,12 @@ Cell: Order Processing
 ```
 
 **Rule:** Use the simplest pattern that handles the complexity of THAT specific operation.
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Architecture Principles](01-architecture-principles.md) | [Platform Engineering Guidelines](03-platform-engineering-guidelines.md) → |

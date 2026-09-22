@@ -1,4 +1,4 @@
-# 22 — Multi-Account Landing Zone
+# Multi-Account Landing Zone
 
 > Enterprise AWS governance with AWS Control Tower, SCPs, RCPs, and CDK Pipelines.
 
@@ -506,3 +506,12 @@ cdk bootstrap aws://NEW_ACCOUNT_ID/us-east-1 \
     --trust PIPELINE_ACCOUNT_ID \
     --qualifier framework
 ```
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Security Baseline](16-security-baseline.md) | [FinOps & Cost Governance](18-finops-cost-governance.md) → |

@@ -651,3 +651,12 @@ flowchart LR
 | ECS Action Logs (2026) | https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-lifecycle-events.html |
 | Container Insights | https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-metrics-ECS.html |
 | ECS Deployment Tuning (242s → 47s) | https://dev.classmethod.jp/en/articles/ecs-deploy-wait-time-tuning-242s-to-47s/ |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Workshop: Enterprise CDK](24-workshop-enterprise-cdk.md) | [Workshop: CI/CD Phase 1](26-workshop-cicd-phase1.md) → |

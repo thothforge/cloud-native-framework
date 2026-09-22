@@ -1,4 +1,4 @@
-# 21 — Security Baseline & Threat Model
+# Security Baseline & Threat Model
 
 > **Status**: Living Document · **Owner**: Security Guild · **Last Review**: 2026-07-29
 > **Applies to**: All serverless workloads deployed via this framework
@@ -1554,3 +1554,12 @@ flowchart LR
 ---
 
 > **Document Revision**: v2.1 · **Next Review**: 2026-10-29 · **Classification**: L2 — Internal
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Observability (OTEL + Powertools)](15-observability.md) | [Multi-Account Landing Zone](17-multi-account-landing-zone.md) → |

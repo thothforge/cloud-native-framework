@@ -447,3 +447,12 @@ To reach **Pioneer** tier with AWS:
 - [ ] AWS Continuum configured for continuous security
 - [ ] Custom SRE agents for recurring operational tasks
 - [ ] Feedback loops from operations back to specifications
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Platform Engineering: IDP → ADP](04-platform-engineering-idp-to-adp.md) | [DevOps & CI/CD (TPF)](06-devops-cicd.md) → |

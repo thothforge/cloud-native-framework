@@ -644,3 +644,12 @@ aws signer list-signing-profiles --query "profiles[?profileName=='OrgLambdaSigni
 | AWS Signer for Lambda | https://docs.aws.amazon.com/lambda/latest/dg/configuration-codesigning.html |
 | ThothCTL DevSecOps | https://thothctl.readthedocs.io/en/latest/framework/use_cases/devsecops_sdlc/ |
 | Building Data Perimeter on AWS | https://docs.aws.amazon.com/whitepapers/latest/building-a-data-perimeter-on-aws/perimeter-overview.html |
+
+<!-- FRAMEWORK-NAV -->
+---
+
+[← Back to index](index.md)
+
+| Previous | Next |
+|:---------|-----:|
+| ← [Workshop: CI/CD Phase 1](26-workshop-cicd-phase1.md) | [Workshop: Micro-Frontends](31-workshop-micro-frontends.md) → |
